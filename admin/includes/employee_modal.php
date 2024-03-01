@@ -9,7 +9,13 @@
           	</div>
           	<div class="modal-body">
             	<form class="form-horizontal" method="POST" action="employee_add.php" enctype="multipart/form-data">
-          		  <div class="form-group">
+            <div class="form-group">
+                   <label for="employee_id" class="col-sm-3 control-label">Employee ID</label>
+                     <div class="col-sm-9">
+                         <input type="text" class="form-control" id="employee_id" name="employee_id" required>
+                   </div>
+              </div>   
+              <div class="form-group">
                   	<label for="firstname" class="col-sm-3 control-label">Firstname</label>
 
                   	<div class="col-sm-9">

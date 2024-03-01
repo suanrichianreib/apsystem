@@ -64,15 +64,29 @@
                     $sql = "SELECT *, employees.employee_id AS empid, attendance.id AS attid FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id ORDER BY attendance.date DESC, attendance.time_in DESC";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
-                      $status = ($row['status'])?'<span class="label label-warning pull-right">ontime</span>':'<span class="label label-danger pull-right">late</span>';
+                      $status_time_in = ($row['status']) ? '<span class="label label-warning pull-right">ontime</span>' : '<span class="label label-danger pull-right">late</span>';
+                      $status_time_out = ''; // Initialize status for time out
+              
+                      // Determine status for time out
+                      if ($row['time_out'] === '00:00:00' || date('h:i A', strtotime($row['time_out'])) === '12:00 AM') {
+                          $status_time_out = '<span class="label label-danger pull-right">not yet</span>';
+                      } else {
+                          $status_time_out = date('h:i A', strtotime($row['time_out']));
+                      }
+
+                      // Update status if time out has occurred
+                      if ($status_time_out !== '<span class="label label-danger pull-right">not yet</span>') {
+                          $status_time_out = '<span class="label label-success pull-right">done</span>';
+                      }
+
                       echo "
                         <tr>
                           <td class='hidden'></td>
                           <td>".date('M d, Y', strtotime($row['date']))."</td>
                           <td>".$row['empid']."</td>
                           <td>".$row['firstname'].' '.$row['lastname']."</td>
-                          <td>".date('h:i A', strtotime($row['time_in'])).$status."</td>
-                          <td>".date('h:i A', strtotime($row['time_out']))."</td>
+                          <td>".date('h:i A', strtotime($row['time_in'])).$status_time_in."</td>
+                          <td>".date('h:i A', strtotime($row['time_out'])).$status_time_out."</td>
                           <td>
                             <button class='btn btn-success btn-sm btn-flat edit' data-id='".$row['attid']."'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm btn-flat delete' data-id='".$row['attid']."'><i class='fa fa-trash'></i> Delete</button>
