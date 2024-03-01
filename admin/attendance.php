@@ -39,7 +39,7 @@
             <option value="12" <?php if(isset($_GET['filter_month']) && $_GET['filter_month'] === '12') echo 'selected'; ?>>December</option>
         </select>
 
-        <label for="filter_year">Filter by Year:</label>
+        <label for="filter_year">&nbsp;&nbsp;&nbsp;&nbsp;Filter by Year:</label>
         <select id="filter_year" name="filter_year">
           <option value="">All Years</option>
           <?php
