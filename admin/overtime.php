@@ -70,7 +70,7 @@
                           <td class='hidden'></td>
                           <td>".date('M d, Y', strtotime($row['date_overtime']))."</td>
                           <td>".$row['empid']."</td>
-                          <td>".$row['firstname'].' '.$row['lastname']."</td>
+                          <td>".$row['firstname'].' '.$row['middlename'].' '.$row['lastname']."</td>
                           <td>".$row['hours']."</td>
                           <td>".$row['rate']."</td>
                           <td>
@@ -124,7 +124,7 @@ function getRow(id){
       var min = '.'+split[1];
       min = min * 60;
       console.log(min);
-      $('.employee_name').html(response.firstname+' '+response.lastname);
+      $('.employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
       $('.otid').val(response.otid);
       $('#datepicker_edit').val(response.date_overtime);
       $('#overtime_date').html(response.date_overtime);

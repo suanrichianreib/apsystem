@@ -35,7 +35,7 @@
 					//
 					$sql = "INSERT INTO attendance (employee_id, date, time_in, status) VALUES ('$id', '$date_now', NOW(), '$logstatus')";
 					if($conn->query($sql)){
-						$output['message'] = 'Time in: '.$row['firstname'].' '.$row['lastname'];
+						$output['message'] = 'Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
 					}
 					else{
 						$output['error'] = true;
@@ -60,7 +60,7 @@
 						
 						$sql = "UPDATE attendance SET time_out = NOW() WHERE id = '".$row['uid']."'";
 						if($conn->query($sql)){
-							$output['message'] = 'Time out: '.$row['firstname'].' '.$row['lastname'];
+							$output['message'] = 'Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
 
 							$sql = "SELECT * FROM attendance WHERE id = '".$row['uid']."'";
 							$query = $conn->query($sql);

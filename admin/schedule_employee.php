@@ -65,7 +65,7 @@
                       echo "
                         <tr>
                           <td>".$row['employee_id']."</td>
-                          <td>".$row['firstname'].' '.$row['lastname']."</td>
+                          <td>".$row['firstname'].' '.$row['middlename'].' '.$row['lastname']."</td>
                           <td>".date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out']))."</td>
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['empid']."'><i class='fa fa-edit'></i> Edit</button>
@@ -104,7 +104,7 @@ function getRow(id){
     data: {id:id},
     dataType: 'json',
     success: function(response){
-      $('.employee_name').html(response.firstname+' '+response.lastname);
+      $('.employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
       $('#schedule_val').val(response.schedule_id);
       $('#schedule_val').html(response.time_in+' '+response.time_out);
       $('#empid').val(response.empid);

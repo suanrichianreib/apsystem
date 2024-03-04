@@ -23,6 +23,13 @@
                   	</div>
                 </div>
                 <div class="form-group">
+                  	<label for="middlename" class="col-sm-3 control-label">Middlename</label>
+
+                  	<div class="col-sm-9">
+                      <textarea class="form-control" name="middlename" id="middlename"></textarea>
+                  	</div>
+                </div>
+                <div class="form-group">
                   	<label for="lastname" class="col-sm-3 control-label">Lastname</label>
 
                   	<div class="col-sm-9">
@@ -135,6 +142,15 @@
                       <input type="text" class="form-control" id="edit_firstname" name="firstname">
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="edit_middlename" class="col-sm-3 control-label">Middlename</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="edit_middlename" name="middlename">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="edit_lastname" class="col-sm-3 control-label">Lastname</label>
 
