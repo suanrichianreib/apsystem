@@ -8,7 +8,7 @@
   }
 ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-purple sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
 
   	<?php include 'includes/navbar.php'; ?>
@@ -176,10 +176,10 @@
         </div>
       </div>
 
-      </section>
-      <!-- right col -->
-    </div>
-  	<?php include 'includes/footer.php'; ?>
+    </section>
+    <!-- right col -->
+  </div>
+  <?php include 'includes/footer.php'; ?>
 
 </div>
 <!-- ./wrapper -->
@@ -283,5 +283,6 @@ $(function(){
   });
 });
 </script>
+</section> <!-- Close section -->
 </body>
 </html>
