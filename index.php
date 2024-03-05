@@ -4,8 +4,8 @@
    <div class="login-box" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <div class="login-logo" style="margin-top: -70px; width: 500px; display: flex; flex-direction: column; align-items: center;">
             <img src="images/UC1.png" alt="Logo" style="max-width: 100%; max-height: 100%;">
-            <p id="date" style="color: #ededed; font-family: 'Bahnschrift Light SemiCondensed', sans-serif;"></p>
-            <p id="time" class="bold" style="color: #ededed; font-family: 'Bahnschrift Light SemiCondensed', sans-serif;"></p>
+            <p id="date" style="color: #ededed; font-family: 'Times New Roman', sans-serif;"></p>
+            <p id="time" class="bold" style="color: #ededed; font-family: 'Times New Roman', sans-serif;"></p>
         </div>
         <div class="login-box-body">
             <h4 class="login-box-msg">Enter Employee ID</h4>
