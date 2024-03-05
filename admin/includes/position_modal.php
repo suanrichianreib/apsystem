@@ -17,10 +17,10 @@
                   	</div>
                 </div>
                 <div class="form-group">
-                    <label for="rate" class="col-sm-3 control-label">Rate per Hr</label>
+                    <!-- <label for="rate" class="col-sm-3 control-label">Rate per Hr</label>
 
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="rate" name="rate" required>
+                      <input type="text" class="form-control" id="rate" name="rate" required> -->
                     </div>
                 </div>
           	</div>
@@ -53,10 +53,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="edit_rate" class="col-sm-3 control-label">Rate per Hr</label>
+                    <!-- <label for="edit_rate" class="col-sm-3 control-label">Rate per Hr</label>
 
                     <div class="col-sm-9">
-                      <input type="text" class="form-control" id="edit_rate" name="rate">
+                      <input type="text" class="form-control" id="edit_rate" name="rate"> -->
                     </div>
                 </div>
           	</div>
