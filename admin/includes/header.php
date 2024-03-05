@@ -49,7 +49,7 @@
       }
 
       .navbar {
-    background-image: url('/apsystem/images/bgc1.png'); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
+    background-image: url('/attendtrack/images/bgc1.png'); /* Replace 'path/to/your/image.jpg' with the actual path to your image */
     background-size: cover; /* Ensures the image covers the entire background */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-position: center center; /* Centers the image */
