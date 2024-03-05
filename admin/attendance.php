@@ -210,7 +210,7 @@ function getRow(id){
       $('#attid').val(response.attid);
       $('#employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
       $('#del_attid').val(response.attid);
-      $('#del_employee_name').html(response.firstname+' '+response.lastname);
+      $('#del_employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
     }
   });
 }

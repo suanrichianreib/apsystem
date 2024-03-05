@@ -16,7 +16,7 @@ if (isset($_SESSION['admin'])) {
     <img src="/attendtrack/images/logo.png" alt="Your Image" style="width: 100%; max-width: 250px; position: absolute; top: 14%; right: 50%; transform: translate(50%, -50%);">
             <div class="login-box max-width-600 mx-auto" style="border: 20px solid white; background-color: white; border-radius: 10px;">
                 <div class="login-logo font-family-Bahnschrift-Light-SemiCondensed font-size-20 text-align-right margin-right-70">
-                    <b>Login as an Admin user</b>
+                    <b>Administrator Page</b>
                 </div>
                 <div class="text-align-right margin-right-10">
                     <p class="login-box-msg">Sign in to start your session</p>

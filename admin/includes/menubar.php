@@ -37,6 +37,7 @@
         <li><a href="position.php"><i class="fa fa-suitcase"></i> Positions</a></li>
         <li class="header">PRINTABLES</li>
         <!-- <li><a href="payroll.php"><i class="fa fa-files-o"></i> <span>Payroll</span></a></li> -->
+        <li><a href="schedule_employee_2.php"><i class="fa fa-info-circle"></i> <span>Summary</span></a></li>
         <li><a href="schedule_employee.php"><i class="fa fa-clock-o"></i> <span>Schedule</span></a></li>
       </ul>
     </section>
