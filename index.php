@@ -1,79 +1,150 @@
 <?php session_start(); ?>
 <?php include 'header.php'; ?>
-<body class="hold-transition login-page" style="background-image: url('images/bg2.png'); background-size: cover; height: 80vh; width: 100vw; margin: 0;">
-   <div class="login-box" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <div class="login-logo" style="margin-top: -70px; width: 500px; display: flex; flex-direction: column; align-items: center;">
-            <img src="images/UC1.png" alt="Logo" style="max-width: 100%; max-height: 100%;">
-            <p id="date" style="color: #ededed; font-family: 'Times New Roman', sans-serif;"></p>
-            <p id="time" class="bold" style="color: #ededed; font-family: 'Times New Roman', sans-serif;"></p>
-        </div>
-        <div class="login-box-body">
-            <h4 class="login-box-msg">Enter Employee ID</h4>
-            <form id="attendance">
-                <div class="form-group">
-                    <select class="form-control" name="status">
-                        <option value="in">Time In</option>
-                        <option value="out">Time Out</option>
-                    </select>
-                </div>
-                <div class="form-group has-feedback">
-                    <input type="text" class="form-control input-lg" id="employee" name="employee" required>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat" name="signin"><i class="fa fa-sign-in"></i> Sign In</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</body>
-</div>
-		<div class="alert alert-success alert-dismissible mt20 text-center" style="display:none;">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <span class="result"><i class="icon fa fa-check"></i> <span class="message"></span></span>
-    </div>
-		<div class="alert alert-danger alert-dismissible mt20 text-center" style="display:none;">
-      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      <span class="result"><i class="icon fa fa-warning"></i> <span class="message"></span></span>
-    </div>
-  		
-</div>
-	
-<?php include 'scripts.php' ?>
-<script type="text/javascript">
-$(function() {
-  var interval = setInterval(function() {
-    var momentNow = moment();
-    $('#date').html(momentNow.format('dddd').substring(0,3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));  
-    $('#time').html(momentNow.format('hh:mm:ss A'));
-  }, 100);
 
-  $('#attendance').submit(function(e){
-    e.preventDefault();
-    var attendance = $(this).serialize();
-    $.ajax({
-      type: 'POST',
-      url: 'attendance.php',
-      data: attendance,
-      dataType: 'json',
-      success: function(response){
-        if(response.error){
-          $('.alert').hide();
-          $('.alert-danger').show();
-          $('.message').html(response.message);
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/your/custom/style.css">
+    <style>
+        body {
+            background-image: url('images/bg2.png');
+            background-size: cover;
+            background-attachment: fixed; /* Fixed background image */
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        else{
-          $('.alert').hide();
-          $('.alert-success').show();
-          $('.message').html(response.message);
-          $('#employee').val('');
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            padding: 40px; /* Increased padding for a larger form */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added a subtle box shadow */
+            max-width: 400px; /* Set a maximum width for the container */
+            transition: background-color 0.3s ease-in-out;
         }
-      }
-    });
-  });
-    
-});
-</script>
+
+        .container:hover {
+            background-color: rgba(255, 255, 255, 1); /* Hover effect for the container */
+        }
+
+        .login-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        h4 {
+            color: #007bff; /* Updated heading color */
+        }
+
+        select,
+        input,
+        button {
+            margin-bottom: 20px; /* Increased margin for better spacing */
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Hover effect for the button */
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .alert-success,
+        .alert-danger {
+            background-color: #f8d7da; /* Updated alert colors */
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        /* Date and Time Styles */
+        #date,
+        #time {
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    margin: 10px 0;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-12">
+                <div class="text-center mb-4 login-logo">
+                    <img class="img-fluid" src="images/UC1.png" alt="Logo">
+                </div>
+
+                <!-- Date and Time Display -->
+                <p id="date" class="text-center"></p>
+                <p id="time" class="text-center"></p>
+
+                <form id="attendance">
+    <h3 class="mb-4 text-center">Enter Employee ID</h3>
+
+    <div class="form-group">
+    <select class="form-control" name="status" style="font-size: 20px; padding: 10px; height: auto;">
+        <option value="in">Time In</option>
+        <option value="out">Time Out</option>
+    </select>
+</div>
+
+
+
+    <div class="form-group">
+        <input type="text" class="form-control" id="employee" name="employee" placeholder="Employee ID" required style="font-size: 18px; padding: 10px;">
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" style="font-size: 18px;">Sign In</button>
+</form>
+
+
+                <!-- Success and Error Alerts -->
+                <div class="alert alert-success text-center" style="display:none;">
+                    <span class="result"><i class="icon fa fa-check"></i> <span class="message"></span></span>
+                </div>
+
+                <div class="alert alert-danger text-center" style="display:none;">
+                    <span class="result"><i class="icon fa fa-warning"></i> <span class="message"></span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php include 'scripts.php' ?>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        // JavaScript code for date and time display
+        $(function () {
+            var interval = setInterval(function () {
+                var momentNow = moment();
+                $('#date').html(momentNow.format('dddd').substring(0, 3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));
+                $('#time').html(momentNow.format('hh:mm:ss A'));
+            }, 100);
+        });
+    </script>
 </body>
+
 </html>
