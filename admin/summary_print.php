@@ -24,7 +24,7 @@
 	require_once('../tcpdf/tcpdf.php');  
     $pdf = new TCPDF('P', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);  
     $pdf->SetCreator(PDF_CREATOR);  
-    $pdf->SetTitle('Ultra Craft Employee Schedules');  
+    $pdf->SetTitle('Ultra Craft Advertising Corporation Attendance Summary');  
     $pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);  
     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));  
     $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
@@ -39,7 +39,7 @@
     $content = '';  
     $content .= '
       	<h2></h2>
-      	<h4 align="center">Ultra Craft Advertising Corporation Employee Schedule</h4>
+      	<h4 align="center">Ultra Craft Advertising Corporation Attendance Summary</h4>
       	<table border="1" cellspacing="0" cellpadding="3">  
            <tr>  
            		<th width="40%" align="center"><b>Employee Name</b></th>

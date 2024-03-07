@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -47,14 +47,14 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
-              <a href="schedule_print.php" class="btn btn-success btn-sm btn-flat"><span class="glyphicon glyphicon-print"></span> Print</a>
+              <a href="summary_print.php" class="btn btn-success btn-sm btn-flat"><span class="glyphicon glyphicon-print"></span> Print</a>
             </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
                   <th>Employee ID</th>
                   <th>Name</th>
-                  <th>Schedule</th>
+                  <th>Present</th>
                   <th>Tools</th>
                 </thead>
                 <tbody>

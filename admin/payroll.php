@@ -5,7 +5,7 @@
   $range_from = date('m/d/Y', strtotime('-30 day', strtotime($range_to)));
 ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-purple sidebar-mini ">
+<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -16,7 +16,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Payroll
+        Summary of Attendance
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
