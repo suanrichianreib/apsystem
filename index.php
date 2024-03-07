@@ -160,10 +160,14 @@ $(function() {
           $('.alert-success').show();
           $('.message').html(response.message);
           $('#employee').val('');
+          $('#employee').focus(); // Focus on employee ID input field after form submission
         }
       }
     });
   });
+
+  // Focus on employee ID input field when the page loads
+  $('#employee').focus();
 
   // Change background color and font color of selected option
   $('select[name="status"]').change(function() {
@@ -173,15 +177,18 @@ $(function() {
         'background-color': 'green',
         'color': 'white'
       });
+      $('#employee').focus(); // Focus on employee ID input field after selecting "Time In"
     } else if (selectedOption === "out") {
       $(this).css({
         'background-color': 'red',
         'color': 'white'
       });
+      $('#employee').focus(); // Focus on employee ID input field after selecting "Time Out"
     }
   }).change(); // Trigger change event initially to set background color and font color based on initial selection
 });
 </script>
+
 
 
 </body>
