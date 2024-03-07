@@ -131,15 +131,16 @@
 
     <?php include 'scripts.php' ?>
 
-<script type="text/javascript">
-    
+    <script type="text/javascript">
 $(function() {
+  // Update date and time every second
   var interval = setInterval(function() {
     var momentNow = moment();
     $('#date').html(momentNow.format('dddd').substring(0,3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));  
     $('#time').html(momentNow.format('hh:mm:ss A'));
-  }, 100);
+  }, 1000);
 
+  // Handle form submission
   $('#attendance').submit(function(e){
     e.preventDefault();
     var attendance = $(this).serialize();
@@ -163,8 +164,26 @@ $(function() {
       }
     });
   });
-        });
-    </script>
+
+  // Change background color and font color of selected option
+  $('select[name="status"]').change(function() {
+    var selectedOption = $(this).val();
+    if (selectedOption === "in") {
+      $(this).css({
+        'background-color': 'green',
+        'color': 'white'
+      });
+    } else if (selectedOption === "out") {
+      $(this).css({
+        'background-color': 'red',
+        'color': 'white'
+      });
+    }
+  }).change(); // Trigger change event initially to set background color and font color based on initial selection
+});
+</script>
+
+
 </body>
 
 </html>
