@@ -131,18 +131,38 @@
 
     <?php include 'scripts.php' ?>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    
+$(function() {
+  var interval = setInterval(function() {
+    var momentNow = moment();
+    $('#date').html(momentNow.format('dddd').substring(0,3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));  
+    $('#time').html(momentNow.format('hh:mm:ss A'));
+  }, 100);
 
-    <script type="text/javascript">
-        // JavaScript code for date and time display
-        $(function () {
-            var interval = setInterval(function () {
-                var momentNow = moment();
-                $('#date').html(momentNow.format('dddd').substring(0, 3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));
-                $('#time').html(momentNow.format('hh:mm:ss A'));
-            }, 100);
+  $('#attendance').submit(function(e){
+    e.preventDefault();
+    var attendance = $(this).serialize();
+    $.ajax({
+      type: 'POST',
+      url: 'attendance.php',
+      data: attendance,
+      dataType: 'json',
+      success: function(response){
+        if(response.error){
+          $('.alert').hide();
+          $('.alert-danger').show();
+          $('.message').html(response.message);
+        }
+        else{
+          $('.alert').hide();
+          $('.alert-success').show();
+          $('.message').html(response.message);
+          $('#employee').val('');
+        }
+      }
+    });
+  });
         });
     </script>
 </body>

@@ -11,8 +11,8 @@
 <body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
 
-  	<?php include 'includes/navbar.php'; ?>
-  	<?php include 'includes/menubar.php'; ?>
+    <?php include 'includes/navbar.php'; ?>
+    <?php include 'includes/menubar.php'; ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -179,7 +179,7 @@
       </section>
       <!-- right col -->
     </div>
-  	<?php include 'includes/footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 
 </div>
 <!-- ./wrapper -->

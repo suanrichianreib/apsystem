@@ -14,15 +14,14 @@ if (isset($_SESSION['admin'])) {
     <div class="background-container" style="background-image: url('/attendtrack/images/bgc1.png'); background-size: cover; display: flex; align-items: center; justify-content: center; min-height: 100vh;">
         <div class="login-box max-width-600 mx-auto" style="background-color: #ffffff; border-radius: 5px; width: 80%; max-width: 400px; padding: 20px;">
 
-    <div class="background-container" style="background-image: url('/attendtrack/images/bgc1.png'); background-size: cover; display: flex; align-items: center; justify-content: center; min-height: 100vh;">
-    <img src="/attendtrack/images/logo.png" alt="Your Image" style="width: 100%; max-width: 250px; position: absolute; top: 14%; right: 50%; transform: translate(50%, -50%);">
-            <div class="login-box max-width-600 mx-auto" style="border: 20px solid white; background-color: white; border-radius: 10px;">
-                <div class="login-logo font-family-Bahnschrift-Light-SemiCondensed font-size-20 text-align-right margin-right-70">
-                    <b>Administrator Page</b>
-                </div>
-                <div class="text-align-right margin-right-10">
-                    <p class="login-box-msg">Sign in to start your session</p>
-                </div>
+            <div class="login-logo font-family-Bahnschrift-Light-SemiCondensed font-size-24 text-align-center">
+                <img src="/attendtrack/images/logo.png" alt="Your Image" style="width: 100%; max-width: 200px;">
+                <p class="margin-top-10"><b>Login as adminstrator</b></p>
+            </div>
+
+            <div class="text-align-center margin-top-20">
+                <p class="login-box-msg">Sign in to start your session</p>
+            </div>
 
             <form action="login.php" method="POST">
                 <div class="form-group">
