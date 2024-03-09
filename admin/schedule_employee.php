@@ -65,7 +65,7 @@
                       echo "
                         <tr>
                           <td>".$row['employee_id']."</td>
-                          <td>".$row['firstname'].' '.$row['middlename'].' '.$row['lastname']."</td>
+                          <td>".$row['lastname'].', '.$row['firstname'].' '.$row['middlename']."</td>
                           <td>".date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out']))."</td>
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['empid']."'><i class='fa fa-edit'></i> Edit</button>

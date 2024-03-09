@@ -45,6 +45,21 @@
 				$int = $int - 1;
 			}
 
+			// Calculate undertime
+			$sched_in = new DateTime($srow['time_in']);
+			$sched_out = new DateTime($srow['time_out']);
+			$sched_interval = $sched_in->diff($sched_out);
+			$sched_hrs = $sched_interval->format('%h');
+			$sched_mins = $sched_interval->format('%i');
+			$sched_mins = $sched_mins/60;
+			$sched_total_hours = $sched_hrs + $sched_mins;
+
+			$undertime = $sched_total_hours - $int;
+
+			// Update undertime in the database
+			$sql = "UPDATE attendance SET under_day = " . (($undertime > 0) ? 1 : 0) . " WHERE id = '$id'";
+			$conn->query($sql);
+
 			$sql = "UPDATE attendance SET num_hr = '$int', status = '$logstatus' WHERE id = '$id'";
 			$conn->query($sql);
 		}

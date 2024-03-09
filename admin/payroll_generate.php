@@ -24,8 +24,8 @@
 			$total += $net;
 			$contents .= '
 			<tr>
-				<td>'.$row['lastname'].', '.$row['firstname'].'</td>
 				<td>'.$row['employee_id'].'</td>
+				<td>'.$row['lastname'].', '.$row['firstname'].' '.$row['middlename'].'</td>
 				<td align="right">'.number_format($net, 2).'</td>
 			</tr>
 			';
@@ -74,8 +74,8 @@
       	<h4 align="center">'.$from_title." - ".$to_title.'</h4>
       	<table border="1" cellspacing="0" cellpadding="3">  
            <tr>  
+		        <th width="30%" align="center"><b>Employee ID</b></th>
            		<th width="40%" align="center"><b>Employee Name</b></th>
-                <th width="30%" align="center"><b>Employee ID</b></th>
 				<th width="30%" align="center"><b>Net Pay</b></th> 
            </tr>  
       ';  

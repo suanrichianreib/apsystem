@@ -155,7 +155,7 @@
                           <td class='hidden'></td>
                           <td>".date('M d, Y', strtotime($row['date']))."</td>
                           <td>".$row['empid']."</td>
-                          <td>".$row['firstname'].' '.$row['middlename'].' '.$row['lastname']."</td>
+                          <td>".$row['lastname'].", ".$row['firstname']." ".$row['middlename']."</td>
                           <td>".date('h:i A', strtotime($row['time_in'])).$status_time_in."</td>
                           <td>".date('h:i A', strtotime($row['time_out'])).$status_time_out."</td>
                           <td>
@@ -208,7 +208,7 @@ function getRow(id){
       $('#edit_time_in').val(response.time_in);
       $('#edit_time_out').val(response.time_out);
       $('#attid').val(response.attid);
-      $('#employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
+      $('#employee_name').html(response.lastname+', '+response.firstname+' '+response.middlename);
       $('#del_attid').val(response.attid);
       $('#del_employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
     }

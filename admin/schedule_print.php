@@ -11,8 +11,8 @@
 		while($row = $query->fetch_assoc()){
 			$contents .= "
 			<tr>
-				<td>".$row['lastname'].", ".$row['firstname']."</td>
-				<td>".$row['employee_id']."</td>
+                <td>".$row['employee_id']."</td>
+				<td>".$row['lastname'].", ".$row['firstname']." ".$row['middlename']."</td>
 				<td>".date('h:i A', strtotime($row['time_in'])).' - '. date('h:i A', strtotime($row['time_out']))."</td>
 			</tr>
 			";
@@ -42,8 +42,8 @@
       	<h4 align="center">Ultra Craft Advertising Corporation Employee Schedule</h4>
       	<table border="1" cellspacing="0" cellpadding="3">  
            <tr>  
-           		<th width="40%" align="center"><b>Employee Name</b></th>
                 <th width="30%" align="center"><b>Employee ID</b></th>
+                <th width="40%" align="center"><b>Employee Name</b></th>
 				<th width="30%" align="center"><b>Schedule</b></th> 
            </tr>  
       ';  

@@ -16,7 +16,7 @@ if (isset($_SESSION['admin'])) {
 
             <div class="login-logo font-family-Bahnschrift-Light-SemiCondensed font-size-24 text-align-center">
                 <img src="/attendtrack/images/logo.png" alt="Your Image" style="width: 100%; max-width: 200px;">
-                <p class="margin-top-10"><b>Login as adminstrator</b></p>
+                <p class="margin-top-10"><b>Admin</b></p>
             </div>
 
             <div class="text-align-center margin-top-20">
