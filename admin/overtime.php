@@ -58,7 +58,7 @@
                   <th>Name</th>
                   <th>No. of Hours</th>
                   <th>Rate</th>
-                  <th>Tools</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   <?php

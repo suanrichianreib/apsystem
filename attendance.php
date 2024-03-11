@@ -35,6 +35,7 @@ if(isset($_POST['employee'])){
                 //
                 $sql = "INSERT INTO attendance (employee_id, date, time_in, status) VALUES ('$id', '$date_now', NOW(), '$logstatus')";
                 if($conn->query($sql)){
+                    // Set status to 0 indicating only time in
                     $output['message'] = 'Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
                 }
                 else{
@@ -57,7 +58,8 @@ if(isset($_POST['employee'])){
                     $output['message'] = 'You have timed out for today';
                 }
                 else{
-                    $sql = "UPDATE attendance SET time_out = NOW() WHERE id = '".$row['uid']."'";
+                    
+                    $sql = "UPDATE attendance SET time_out = NOW(), status = 1 WHERE id = '".$row['uid']."'";
                     if($conn->query($sql)){
                         $output['message'] = 'Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
 
@@ -87,23 +89,18 @@ if(isset($_POST['employee'])){
                         $mins = $interval->format('%i');
                         $mins = $mins/60;
                         $int = $hrs + $mins;
-                        if($int > 4){
-                            $int = $int - 1;
-                        }
 
                         // Calculate undertime
-                        $sched_in = new DateTime($srow['time_in']);
-                        $sched_out = new DateTime($srow['time_out']);
-                        $sched_interval = $sched_in->diff($sched_out);
-                        $sched_hrs = $sched_interval->format('%h');
-                        $sched_mins = $sched_interval->format('%i');
-                        $sched_mins = $sched_mins/60;
-                        $sched_total_hours = $sched_hrs + $sched_mins;
+                        $sched_time_in = new DateTime($srow['time_in']);
+                        $sched_time_out = new DateTime($srow['time_out']);
+                        if ($time_out < $sched_time_out) {
+                            // If time out is before scheduled time out
+                            $output['message'] .= ', undertime detected';
+                            $sql = "UPDATE attendance SET num_hr = '$int', under_day = 1 WHERE id = '".$row['uid']."'";
+                        } else {
+                            $sql = "UPDATE attendance SET num_hr = '$int', under_day = 0 WHERE id = '".$row['uid']."'";
+                        }
 
-                        $undertime = $sched_total_hours - $int;
-
-                        // Update undertime in the database
-                        $sql = "UPDATE attendance SET under_time = '$undertime' WHERE id = '".$row['uid']."'";
                         $conn->query($sql);
                     }
                     else{
@@ -123,4 +120,5 @@ if(isset($_POST['employee'])){
 }
 
 echo json_encode($output);
+
 ?>

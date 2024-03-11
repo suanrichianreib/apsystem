@@ -52,7 +52,7 @@
               <table id="example1" class="table table-bordered">
                 <thead>
                   <th>Position Title</th>
-                  <th>Tools</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   <?php

@@ -57,7 +57,7 @@
                   <th>Employee ID</th>
                   <th>Name</th>
                   <th>Amount</th>
-                  <th>Tools</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   <?php

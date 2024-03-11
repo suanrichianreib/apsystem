@@ -58,7 +58,7 @@
                   <th>Position</th>
                   <th>Schedule</th>
                   <th>Created</th>
-                  <th>Tools</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   <?php

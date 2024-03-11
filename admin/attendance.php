@@ -130,12 +130,15 @@
                   <th>Name</th>
                   <th>Time In</th>
                   <th>Time Out</th>
-                  <th>Tools</th>
+                  <th>Action</th>
                 </thead>
                 <tbody>
                   <?php
                     while($row = $query->fetch_assoc()){
-                      $status_time_in = ($row['status']) ? '<span class="label label-warning pull-right">ontime</span>' : '<span class="label label-danger pull-right">late</span>';
+                      $sched_time_in = '08:00:00'; // Example scheduled time in
+                      $time_in = strtotime($row['time_in']);
+                      $late = ($time_in > strtotime($sched_time_in)) ? '<span class="label label-danger pull-right">late</span>' : '<span class="label label-warning pull-right">ontime</span>';
+
                       $status_time_out = ''; // Initialize status for time out
               
                       // Determine status for time out
@@ -156,7 +159,7 @@
                           <td>".date('M d, Y', strtotime($row['date']))."</td>
                           <td>".$row['empid']."</td>
                           <td>".$row['lastname'].", ".$row['firstname']." ".$row['middlename']."</td>
-                          <td>".date('h:i A', strtotime($row['time_in'])).$status_time_in."</td>
+                          <td>".date('h:i A', strtotime($row['time_in'])).$late."</td>
                           <td>".date('h:i A', strtotime($row['time_out'])).$status_time_out."</td>
                           <td>
                             <button class='btn btn-success btn-sm btn-flat edit' data-id='".$row['attid']."'><i class='fa fa-edit'></i> Edit</button>

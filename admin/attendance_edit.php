@@ -13,6 +13,7 @@
 		if($conn->query($sql)){
 			$_SESSION['success'] = 'Attendance updated successfully';
 
+			// Update the attendance record
 			$sql = "SELECT * FROM attendance WHERE id = '$id'";
 			$query = $conn->query($sql);
 			$row = $query->fetch_assoc();
@@ -22,9 +23,13 @@
 			$query = $conn->query($sql);
 			$srow = $query->fetch_assoc();
 
-			//updates
+			// Update undertime in the database
+			$under_day = ($time_out >= $srow['time_out']) ? 0 : 1; // Check if time out is after or exactly at scheduled time out
+			$sql = "UPDATE attendance SET under_day = '$under_day' WHERE id = '$id'";
+			$conn->query($sql);
+
+			// Calculate other details (num_hr and status)
 			$logstatus = ($time_in > $srow['time_in']) ? 0 : 1;
-			//
 
 			if($srow['time_in'] > $time_in){
 				$time_in = $srow['time_in'];
@@ -45,22 +50,10 @@
 				$int = $int - 1;
 			}
 
-			// Calculate undertime
-			$sched_in = new DateTime($srow['time_in']);
-			$sched_out = new DateTime($srow['time_out']);
-			$sched_interval = $sched_in->diff($sched_out);
-			$sched_hrs = $sched_interval->format('%h');
-			$sched_mins = $sched_interval->format('%i');
-			$sched_mins = $sched_mins/60;
-			$sched_total_hours = $sched_hrs + $sched_mins;
+			// Set status based on the calculated time in and time out
+			$logstatus = ($time_in > $srow['time_in'] && $time_out < $srow['time_out']) ? 0 : 1;
 
-			$undertime = $sched_total_hours - $int;
-
-			// Update undertime in the database
-			$sql = "UPDATE attendance SET under_day = " . (($undertime > 0) ? 1 : 0) . " WHERE id = '$id'";
-			$conn->query($sql);
-
-			$sql = "UPDATE attendance SET num_hr = '$int', status = '$logstatus' WHERE id = '$id'";
+			$sql = "UPDATE attendance SET num_hr = '$int', status = '$logstatus' WHERE id = '$id'"; // Set status based on calculated time in and time out
 			$conn->query($sql);
 		}
 		else{
@@ -72,5 +65,4 @@
 	}
 
 	header('location:attendance.php');
-
 ?>
