@@ -37,6 +37,8 @@ if(isset($_POST['employee'])){
                 if($conn->query($sql)){
                     // Set status to 0 indicating only time in
                     $output['message'] = 'Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
+                    $sql_update_status = "UPDATE attendance SET status = 0 WHERE employee_id = '$id' AND date = '$date_now'";
+                    $conn->query($sql_update_status);
                 }
                 else{
                     $output['error'] = true;
@@ -58,8 +60,7 @@ if(isset($_POST['employee'])){
                     $output['message'] = 'You have timed out for today';
                 }
                 else{
-                    
-                    $sql = "UPDATE attendance SET time_out = NOW(), status = 1 WHERE id = '".$row['uid']."'";
+                    $sql = "UPDATE attendance SET time_out = NOW() WHERE id = '".$row['uid']."'";
                     if($conn->query($sql)){
                         $output['message'] = 'Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
 
