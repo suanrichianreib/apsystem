@@ -37,8 +37,6 @@ if(isset($_POST['employee'])){
                 if($conn->query($sql)){
                     // Set status to 0 indicating only time in
                     $output['message'] = 'Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
-                    $sql_update_status = "UPDATE attendance SET status = 0 WHERE employee_id = '$id' AND date = '$date_now'";
-                    $conn->query($sql_update_status);
                 }
                 else{
                     $output['error'] = true;
@@ -61,11 +59,7 @@ if(isset($_POST['employee'])){
                 }
                 else{
                     
-<<<<<<< HEAD
                     $sql = "UPDATE attendance SET time_out = NOW(), status = 1 WHERE id = '".$row['uid']."'";
-=======
-                    $sql = "UPDATE attendance SET time_out = NOW() WHERE id = '".$row['uid']."'";
->>>>>>> cea299a8db7f9fb1a0574bb306eb44472b0ac49c
                     if($conn->query($sql)){
                         $output['message'] = 'Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
 
@@ -127,8 +121,4 @@ if(isset($_POST['employee'])){
 
 echo json_encode($output);
 
-<<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> cea299a8db7f9fb1a0574bb306eb44472b0ac49c
