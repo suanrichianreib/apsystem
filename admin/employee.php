@@ -1,4 +1,6 @@
-<?php include 'includes/session.php'; ?>
+<?php
+	include 'includes/session.php';
+?>
 <?php include 'includes/header.php'; ?>
 <body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
@@ -68,7 +70,12 @@
                       ?>
                         <tr>
                           <td><?php echo $row['employee_id']; ?></td>
-                          <td><img src="<?php echo (!empty($row['photo']))? '../images/'.$row['photo']:'../images/profile.jpg'; ?>" width="30px" height="30px"> <a href="#edit_photo" data-toggle="modal" class="pull-right photo" data-id="<?php echo $row['empid']; ?>"><span class="fa fa-edit"></span></a></td>
+                          <td>
+                            <a href="../images/<?php echo (!empty($row['photo'])) ? $row['photo'] : 'profile.jpg'; ?>" target="_blank">
+                              <img src="../images/<?php echo (!empty($row['photo'])) ? $row['photo'] : 'profile.jpg'; ?>" width="30px" height="30px">
+                            </a>
+                            <a href="#edit_photo" data-toggle="modal" class="pull-right photo" data-id="<?php echo $row['empid']; ?>"><span class="fa fa-edit"></span></a>
+                          </td>
                           <td><?php echo $row['lastname'].', '.$row['firstname'].' '.$row['middlename']; ?></td>
                           <td><?php echo $row['description']; ?></td>
                           <td><?php echo date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out'])); ?></td>
