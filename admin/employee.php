@@ -127,7 +127,7 @@ function getRow(id){
     success: function(response){
       $('.empid').val(response.empid);
       $('.employee_id').html(response.employee_id);
-      $('.del_employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
+      $('.del_employee_name').html(response.lastname+', '+response.firstname+' '+response.middlename);
       $('#employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
       $('#edit_firstname').val(response.firstname);
       $('#edit_middlename').val(response.middlename);

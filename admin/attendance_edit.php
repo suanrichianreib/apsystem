@@ -23,9 +23,12 @@
 			$query = $conn->query($sql);
 			$srow = $query->fetch_assoc();
 
+			// Determine if the employee is late based on the updated time in
+			$is_late = ($time_in > $srow['time_in']) ? 1 : 0;
+
 			// Update undertime in the database
 			$under_day = ($time_out >= $srow['time_out']) ? 0 : 1; // Check if time out is after or exactly at scheduled time out
-			$sql = "UPDATE attendance SET under_day = '$under_day' WHERE id = '$id'";
+			$sql = "UPDATE attendance SET under_day = '$under_day', late = '$is_late' WHERE id = '$id'";
 			$conn->query($sql);
 
 			// Calculate other details (num_hr and status)

@@ -31,9 +31,12 @@ if(isset($_POST['employee'])){
                 $sql = "SELECT * FROM schedules WHERE id = '$sched'";
                 $squery = $conn->query($sql);
                 $srow = $squery->fetch_assoc();
-                $logstatus = ($lognow > $srow['time_in']) ? 0 : 1;
+                
+                // Check if late
+                $late = ($lognow > $srow['time_in']) ? 1 : 0;
+                
                 //
-                $sql = "INSERT INTO attendance (employee_id, date, time_in, status) VALUES ('$id', '$date_now', NOW(), '$logstatus')";
+                $sql = "INSERT INTO attendance (employee_id, date, time_in, status, late) VALUES ('$id', '$date_now', NOW(), 0, '$late')";
                 if($conn->query($sql)){
                     // Set status to 0 indicating only time in
                     $output['message'] = 'Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
@@ -59,7 +62,14 @@ if(isset($_POST['employee'])){
                 }
                 else{
                     
-                    $sql = "UPDATE attendance SET time_out = NOW(), status = 1 WHERE id = '".$row['uid']."'";
+                    $sql = "UPDATE attendance SET time_out = NOW(), status = 1";
+                    
+                    // Retrieve 'late' value stored when clocking in
+                    $late = $row['late'];
+                    $sql .= ", late = '$late'";
+                    
+                    $sql .= " WHERE id = '".$row['uid']."'";
+                    
                     if($conn->query($sql)){
                         $output['message'] = 'Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
 

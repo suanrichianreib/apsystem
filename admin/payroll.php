@@ -60,7 +60,7 @@
                     <input type="text" class="form-control pull-right col-sm-8" id="reservation" name="date_range" value="<?php echo (isset($_GET['range'])) ? $_GET['range'] : $range_from.' - '.$range_to; ?>">
                   </div>
                   <button type="button" class="btn btn-success btn-sm btn-flat" id="payroll"><span class="glyphicon glyphicon-print"></span> Payroll</button>
-                  <button type="button" class="btn btn-primary btn-sm btn-flat" id="payslip"><span class="glyphicon glyphicon-print"></span> Payslip</button>
+                  <!-- <button type="button" class="btn btn-primary btn-sm btn-flat" id="payslip"><span class="glyphicon glyphicon-print"></span> Payslip</button> -->
                 </form>
               </div>
             </div>
@@ -69,9 +69,9 @@
                 <thead>
                   <th>Employee ID</th>
                   <th>Employee Name</th>
+                  <th>Position</th> <!-- New column -->
                   <th>Present</th>
-                  <th>Late</th>
-                  <th>Undertime Days</th>
+                  <th>Undertime Days</th> <!-- Removed the 'Late' column heading -->
                   <th>Total Hours Work</th>
                 </thead>
                 <tbody>
@@ -92,30 +92,19 @@
                       $to = date('Y-m-d', strtotime($ex[1]));
                     }
 
-                    $sql = "SELECT *, SUM(num_hr) AS total_hr, SUM(under_day) AS total_undertime, attendance.employee_id AS empid FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id LEFT JOIN position ON position.id=employees.position_id WHERE date BETWEEN '$from' AND '$to' GROUP BY attendance.employee_id ORDER BY employees.lastname ASC, employees.firstname ASC";
+                    $sql = "SELECT employees.employee_id, employees.lastname, employees.firstname, employees.middlename, position.description AS position_description, COUNT(attendance.status) as present_count, SUM(num_hr) AS total_hr, SUM(under_day) AS total_undertime FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id LEFT JOIN position ON position.id=employees.position_id WHERE date BETWEEN '$from' AND '$to' GROUP BY attendance.employee_id ORDER BY employees.lastname ASC, employees.firstname ASC";
+
 
                     $query = $conn->query($sql);
                     $total = 0;
                     while($row = $query->fetch_assoc()){
-                      $empid = $row['empid'];
-                      
-                      $casql = "SELECT *, SUM(amount) AS cashamount FROM cashadvance WHERE employee_id='$empid' AND date_advance BETWEEN '$from' AND '$to'";
-                      
-                      $caquery = $conn->query($casql);
-                      $carow = $caquery->fetch_assoc();
-                      $cashadvance = $carow['cashamount'];
-
-                      $gross = $row['rate'] * $row['total_hr'];
-                      $total_deduction = $deduction + $cashadvance;
-                      $net = $gross - $total_deduction;
-
                       echo "
                         <tr>
                           <td>".$row['employee_id']."</td>
                           <td>".$row['lastname'].", ".$row['firstname']." ".$row['middlename']."</td>
-                          <td>".number_format($gross, 2)."</td>
-                          <td>".number_format($deduction, 2)."</td>
-                          <td>".number_format($row['total_undertime'], 2)."</td>
+                          <td>".$row['position_description']."</td> <!-- Display position description -->
+                          <td>".$row['present_count']."</td>
+                          <td>".intval($row['total_undertime'])."</td>
                           <td>".number_format($row['total_hr'], 2)."</td>
                         </tr>
                       ";
@@ -184,10 +173,7 @@ function getRow(id){
     }
   });
 }
-
-
 </script>
 <?php include 'includes/datatable_initializer.php'; ?>
 </body>
 </html>
-d

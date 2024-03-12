@@ -35,10 +35,13 @@
 				// Check if time out is before scheduled time out
 				$under_day = ($time_out < $scherow['time_out']) ? 1 : 0;
 
+				// Determine if employee is late
+				$is_late = ($time_in > $scherow['time_in']) ? 1 : 0;
+
 				// Determine the status based on the presence of both time in and time out
 				$status = ($time_in != '' && $time_out != '') ? 1 : 0;
 
-				$sql = "INSERT INTO attendance (employee_id, date, time_in, time_out, status, under_day) VALUES ('$emp', '$date', '$time_in', '$time_out', '$status', '$under_day')";
+				$sql = "INSERT INTO attendance (employee_id, date, time_in, time_out, status, under_day, late) VALUES ('$emp', '$date', '$time_in', '$time_out', '$status', '$under_day', '$is_late')";
 				if($conn->query($sql)){
 					$_SESSION['success'] = 'Attendance added successfully';
 					$id = $conn->insert_id;

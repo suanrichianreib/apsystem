@@ -82,11 +82,11 @@
                 $query = $conn->query($sql);
                 $total = $query->num_rows;
 
-                $sql = "SELECT * FROM attendance WHERE status = 1";
+                $sql = "SELECT * FROM attendance WHERE late = 0";
                 $query = $conn->query($sql);
-                $early = $query->num_rows;
+                $ontime = $query->num_rows;
                 
-                $percentage = ($early/$total)*100;
+                $percentage = ($ontime/$total)*100;
 
                 echo "<h3>".number_format($percentage, 2)."<sup style='font-size: 20px'>%</sup></h3>";
               ?>
@@ -105,7 +105,7 @@
           <div class="small-box bg-yellow">
             <div class="inner">
               <?php
-                $sql = "SELECT * FROM attendance WHERE date = '$today' AND status = 1";
+                $sql = "SELECT * FROM attendance WHERE date = '$today' AND late = 0";
                 $query = $conn->query($sql);
 
                 echo "<h3>".$query->num_rows."</h3>"
@@ -125,7 +125,7 @@
           <div class="small-box bg-red">
             <div class="inner">
               <?php
-                $sql = "SELECT * FROM attendance WHERE date = '$today' AND status = 0";
+                $sql = "SELECT * FROM attendance WHERE date = '$today' AND late = 1";
                 $query = $conn->query($sql);
 
                 echo "<h3>".$query->num_rows."</h3>"
@@ -191,11 +191,11 @@
   $ontime = array();
   $late = array();
   for( $m = 1; $m <= 12; $m++ ) {
-    $sql = "SELECT * FROM attendance WHERE MONTH(date) = '$m' AND status = 1 $and";
+    $sql = "SELECT * FROM attendance WHERE MONTH(date) = '$m' AND late = 0 $and";
     $oquery = $conn->query($sql);
     array_push($ontime, $oquery->num_rows);
 
-    $sql = "SELECT * FROM attendance WHERE MONTH(date) = '$m' AND status = 0 $and";
+    $sql = "SELECT * FROM attendance WHERE MONTH(date) = '$m' AND late = 1 $and";
     $lquery = $conn->query($sql);
     array_push($late, $lquery->num_rows);
 

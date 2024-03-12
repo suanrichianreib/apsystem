@@ -4,7 +4,7 @@
 	function generateRow($from, $to, $conn, $deduction){
 		$contents = '';
 	 	
-		$sql = "SELECT *, sum(num_hr) AS total_hr, attendance.employee_id AS empid FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id LEFT JOIN position ON position.id=employees.position_id WHERE date BETWEEN '$from' AND '$to' GROUP BY attendance.employee_id ORDER BY employees.lastname ASC, employees.firstname ASC";
+		$sql = "SELECT *, SUM(num_hr) AS total_hr, attendance.employee_id AS empid, GROUP_CONCAT(attendance.status) AS present, COUNT(attendance.status) AS status_count, SUM(attendance.under_day) AS undertime_days, position.description AS position_description FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id LEFT JOIN position ON position.id=employees.position_id WHERE date BETWEEN '$from' AND '$to' GROUP BY attendance.employee_id ORDER BY employees.lastname ASC, employees.firstname ASC";
 
 		$query = $conn->query($sql);
 		$total = 0;
@@ -26,17 +26,14 @@
 			<tr>
 				<td>'.$row['employee_id'].'</td>
 				<td>'.$row['lastname'].', '.$row['firstname'].' '.$row['middlename'].'</td>
-				<td align="right">'.number_format($net, 2).'</td>
+				<td>'.$row['position_description'].'</td> <!-- Display position description -->
+				<td>'.$row['status_count'].'</td> <!-- Include the Present column -->
+				<td>'.$row['undertime_days'].'</td> <!-- Include the Undertime Days column -->
+				<td>'.$row['total_hr'].'</td> <!-- Include the Total Hours Work column -->
 			</tr>
 			';
 		}
 
-		$contents .= '
-			<tr>
-				<td colspan="2" align="right"><b>Total</b></td>
-				<td align="right"><b>'.number_format($total, 2).'</b></td>
-			</tr>
-		';
 		return $contents;
 	}
 		
@@ -70,13 +67,16 @@
     $pdf->AddPage();  
     $content = '';  
     $content .= '
-      	<h2 align="center">TechSoft IT Solutions</h2>
+      	<h2 align="center">Ultra Craft Summary of Attendance</h2>
       	<h4 align="center">'.$from_title." - ".$to_title.'</h4>
       	<table border="1" cellspacing="0" cellpadding="3">  
            <tr>  
-		        <th width="30%" align="center"><b>Employee ID</b></th>
-           		<th width="40%" align="center"><b>Employee Name</b></th>
-				<th width="30%" align="center"><b>Net Pay</b></th> 
+		        <th width="15%" align="center"><b>Employee ID</b></th>
+           		<th width="25%" align="center"><b>Employee Name</b></th>
+           		<th width="15%" align="center"><b>Position</b></th> <!-- New column header for Position -->
+           		<th width="15%" align="center"><b>Present</b></th> <!-- Include the Present column header -->
+				<th width="15%" align="center"><b>Undertime Days</b></th> <!-- Include the Undertime Days column header -->
+				<th width="15%" align="center"><b>Total Hours Work</b></th> <!-- Include the Total Hours Work column header -->
            </tr>  
       ';  
     $content .= generateRow($from, $to, $conn, $deduction);  
