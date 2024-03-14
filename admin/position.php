@@ -1,24 +1,17 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-red sidebar-mini ">
 <div class="wrapper">
-
   <?php include 'includes/navbar.php'; ?>
   <?php include 'includes/menubar.php'; ?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Positions
-      </h1>
+      <h1>Positions</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Positions</li>
       </ol>
     </section>
-    <!-- Main content -->
     <section class="content">
       <?php
         if(isset($_SESSION['error'])){
@@ -52,16 +45,18 @@
               <table id="example1" class="table table-bordered">
                 <thead>
                   <th>Position Title</th>
+                  <th>Description</th> <!-- New column header for Description -->
                   <th>Action</th>
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT * FROM position";
+                    $sql = "SELECT * FROM position"; // Fetch all columns from the position table
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
                       echo "
                         <tr>
-                          <td>".$row['description']."</td>
+                          <td>".$row['description']."</td> <!-- Display the description column data -->
+                          <td>".$row['meaning']."</td> <!-- Display the meaning column data -->
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id']."'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id']."'><i class='fa fa-trash'></i> Delete</button>
@@ -78,7 +73,6 @@
       </div>
     </section>   
   </div>
-    
   <?php include 'includes/footer.php'; ?>
   <?php include 'includes/position_modal.php'; ?>
 </div>

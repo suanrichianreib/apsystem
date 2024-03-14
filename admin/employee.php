@@ -1,5 +1,5 @@
 <?php
-	include 'includes/session.php';
+    include 'includes/session.php';
 ?>
 <?php include 'includes/header.php'; ?>
 <body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
@@ -59,6 +59,7 @@
                   <th>Name</th>
                   <th>Position</th>
                   <th>Schedule</th>
+                  <th>Auto Time Out</th> <!-- Added column -->
                   <th>Created</th>
                   <th>Action</th>
                 </thead>
@@ -79,6 +80,7 @@
                           <td><?php echo $row['lastname'].', '.$row['firstname'].' '.$row['middlename']; ?></td>
                           <td><?php echo $row['description']; ?></td>
                           <td><?php echo date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out'])); ?></td>
+                          <td><?php echo ($row['auto_time'] == 1) ? 'Auto' : 'None'; ?></td> <!-- Added column data -->
                           <td><?php echo date('M d, Y', strtotime($row['created_on'])) ?></td>
                           <td>
                             <button class="btn btn-success btn-sm edit btn-flat" data-id="<?php echo $row['empid']; ?>"><i class="fa fa-edit"></i> Edit</button>
@@ -136,6 +138,7 @@ function getRow(id){
       $('.employee_id').html(response.employee_id);
       $('.del_employee_name').html(response.lastname+', '+response.firstname+' '+response.middlename);
       $('#employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
+      $('#edit_employee_id').val(response.employee_id);
       $('#edit_firstname').val(response.firstname);
       $('#edit_middlename').val(response.middlename);
       $('#edit_lastname').val(response.lastname);

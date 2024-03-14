@@ -28,8 +28,8 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="employee.php"><i class="fa fa-circle-o"></i> Employee List</a></li>
-            <!-- <li><a href="overtime.php"><i class="fa fa-circle-o"></i> Overtime</a></li>
-            <li><a href="cashadvance.php"><i class="fa fa-circle-o"></i> Cash Advance</a></li> -->
+            <li><a href="overtime.php"><i class="fa fa-circle-o"></i> Overtime</a></li>
+            <!-- <li><a href="cashadvance.php"><i class="fa fa-circle-o"></i> Cash Advance</a></li> -->
             <li><a href="schedule.php"><i class="fa fa-circle-o"></i> Schedules</a></li>
           </ul>
         </li>

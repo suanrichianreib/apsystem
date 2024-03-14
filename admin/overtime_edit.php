@@ -4,7 +4,7 @@
 	if(isset($_POST['edit'])){
 		$id = $_POST['id'];
 		$date = $_POST['date'];
-		$hours = $_POST['hours'] + ($_POST['mins']/60);
+		$hours = (float)$_POST['hours'] + ((int)$_POST['mins'] / 60);
 		$rate = $_POST['rate'];
 
 		$sql = "UPDATE overtime SET hours = '$hours', rate = '$rate', date_overtime = '$date' WHERE id = '$id'";

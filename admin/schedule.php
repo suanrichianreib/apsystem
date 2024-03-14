@@ -1,25 +1,18 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-red sidebar-mini ">
 <div class="wrapper">
-
   <?php include 'includes/navbar.php'; ?>
   <?php include 'includes/menubar.php'; ?>
-
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Schedules
-      </h1>
+      <h1>Schedules</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li>Employees</li>
         <li class="active">Schedules</li>
       </ol>
     </section>
-    <!-- Main content -->
     <section class="content">
       <?php
         if(isset($_SESSION['error'])){
@@ -54,17 +47,19 @@
                 <thead>
                   <th>Time In</th>
                   <th>Time Out</th>
+                  <th>Auto Time Out</th> <!-- Add new column header -->
                   <th>Action</th>
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT * FROM schedules";
+                    $sql = "SELECT *, IF(auto_time = 1, 'Auto', 'None') AS auto_time_display FROM schedules"; // Add IF condition to display 'Auto' or 'None'
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
                       echo "
                         <tr>
                           <td>".date('h:i A', strtotime($row['time_in']))."</td>
                           <td>".date('h:i A', strtotime($row['time_out']))."</td>
+                          <td>".$row['auto_time_display']."</td> <!-- Display the value of auto_time as 'Auto' or 'None' -->
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id']."'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id']."'><i class='fa fa-trash'></i> Delete</button>
@@ -81,7 +76,6 @@
       </div>
     </section>   
   </div>
-    
   <?php include 'includes/footer.php'; ?>
   <?php include 'includes/schedule_modal.php'; ?>
 </div>
@@ -113,6 +107,7 @@ function getRow(id){
       $('#timeid').val(response.id);
       $('#edit_time_in').val(response.time_in);
       $('#edit_time_out').val(response.time_out);
+      $('#edit_auto_time').val(response.auto_time); // Update the dropdown with the correct value
       $('#del_timeid').val(response.id);
       $('#del_schedule').html(response.time_in+' - '+response.time_out);
     }

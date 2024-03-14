@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-purple sidebar-mini ">
+<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -57,7 +57,6 @@
                   <th>Employee ID</th>
                   <th>Name</th>
                   <th>No. of Hours</th>
-                  <th>Rate</th>
                   <th>Action</th>
                 </thead>
                 <tbody>
@@ -72,7 +71,6 @@
                           <td>".$row['empid']."</td>
                           <td>".$row['firstname'].' '.$row['middlename'].' '.$row['lastname']."</td>
                           <td>".$row['hours']."</td>
-                          <td>".$row['rate']."</td>
                           <td>
                             <button class='btn btn-success btn-sm btn-flat edit' data-id='".$row['otid']."'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm btn-flat delete' data-id='".$row['otid']."'><i class='fa fa-trash'></i> Delete</button>
@@ -130,7 +128,6 @@ function getRow(id){
       $('#overtime_date').html(response.date_overtime);
       $('#hours_edit').val(hour);
       $('#mins_edit').val(min);
-      $('#rate_edit').val(response.rate);
     }
   });
 }

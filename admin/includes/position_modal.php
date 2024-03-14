@@ -21,7 +21,7 @@
 
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="rate" name="rate" required> -->
-                    </div>
+                    <!-- </div> -->
                 </div>
           	</div>
           	<div class="modal-footer">

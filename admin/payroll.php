@@ -92,8 +92,27 @@
                       $to = date('Y-m-d', strtotime($ex[1]));
                     }
 
-                    $sql = "SELECT employees.employee_id, employees.lastname, employees.firstname, employees.middlename, position.description AS position_description, COUNT(attendance.status) as present_count, SUM(num_hr) AS total_hr, SUM(under_day) AS total_undertime FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id LEFT JOIN position ON position.id=employees.position_id WHERE date BETWEEN '$from' AND '$to' GROUP BY attendance.employee_id ORDER BY employees.lastname ASC, employees.firstname ASC";
-
+                    $sql = "SELECT 
+                    employees.employee_id, 
+                    employees.lastname, 
+                    employees.firstname, 
+                    employees.middlename, 
+                    position.description AS position_description, 
+                    COUNT(attendance.status) AS present_count, 
+                    SUM(attendance.num_hr) + COALESCE(overtime.total_overtime, 0) AS total_hr, 
+                    SUM(under_day) AS total_undertime
+                FROM attendance 
+                LEFT JOIN employees ON employees.id = attendance.employee_id 
+                LEFT JOIN position ON position.id = employees.position_id 
+                LEFT JOIN (
+                    SELECT employee_id, SUM(hours) AS total_overtime
+                    FROM overtime
+                    GROUP BY employee_id
+                ) AS overtime ON overtime.employee_id = employees.id
+                WHERE date BETWEEN '$from' AND '$to' 
+                GROUP BY attendance.employee_id 
+                ORDER BY employees.lastname ASC, employees.firstname ASC";
+                
 
                     $query = $conn->query($sql);
                     $total = 0;

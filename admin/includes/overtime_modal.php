@@ -39,13 +39,13 @@
                     	<input type="text" class="form-control" id="mins" name="mins">
                   	</div>
                 </div>
-                 <div class="form-group">
+                 <!-- <div class="form-group">
                     <label for="rate" class="col-sm-3 control-label">Rate</label>
 
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="rate" name="rate" required>
                     </div>
-                </div>
+                </div> -->
           	</div>
           	<div class="modal-footer">
             	<button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -91,13 +91,13 @@
                       <input type="text" class="form-control" id="mins_edit" name="mins">
                     </div>
                 </div>
-                 <div class="form-group">
+                 <!-- <div class="form-group">
                     <label for="rate_edit" class="col-sm-3 control-label">Rate</label>
 
                     <div class="col-sm-9">
                       <input type="text" class="form-control" id="rate_edit" name="rate" required>
                     </div>
-                </div>
+                </div> -->
           	</div>
           	<div class="modal-footer">
             	<button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
