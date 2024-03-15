@@ -56,7 +56,7 @@
                       echo "
                         <tr>
                           <td>".$row['description']."</td> <!-- Display the description column data -->
-                          <td>".$row['meaning']."</td> <!-- Display the meaning column data -->
+                          <td>".$row['rate']."</td> <!-- Display the meaning column data -->
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id']."'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id']."'><i class='fa fa-trash'></i> Delete</button>
@@ -103,6 +103,7 @@ function getRow(id){
     success: function(response){
       $('#posid').val(response.id);
       $('#edit_title').val(response.description);
+      $('#edit_meaning').val(response.meaning);
       $('#edit_rate').val(response.rate);
       $('#del_posid').val(response.id);
       $('#del_position').html(response.description);

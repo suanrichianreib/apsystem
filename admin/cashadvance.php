@@ -118,7 +118,7 @@ function getRow(id){
     success: function(response){
       console.log(response);
       $('.date').html(response.date_advance);
-      $('.employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
+      $('.employee_name').html(response.lastname+', '+response.firstname+' '+response.middlename);
       $('.caid').val(response.caid);
       $('#edit_amount').val(response.amount);
     }

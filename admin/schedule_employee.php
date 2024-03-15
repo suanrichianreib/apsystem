@@ -104,7 +104,7 @@ function getRow(id){
     data: {id:id},
     dataType: 'json',
     success: function(response){
-      $('.employee_name').html(response.firstname+' '+response.middlename+' '+response.lastname);
+      $('.employee_name').html(response.lastname+', '+response.firstname+' '+response.middlename);
       $('#schedule_val').val(response.schedule_id);
       $('#schedule_val').html(response.time_in+' '+response.time_out);
       $('#empid').val(response.empid);
