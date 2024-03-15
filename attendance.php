@@ -42,8 +42,7 @@ if(isset($_POST['employee'])){
                 $sql = "INSERT INTO attendance (employee_id, date, time_in, status, late) VALUES ('$id', '$date_now', NOW(), 0, '$late')";
                 if($conn->query($sql)){
                     // Set status to 0 indicating only time in
-                    $output['message'] = 'Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
-                    
+                    $output['message'] = '<span style="font-size: 20px;">Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'].' '.$lognow.'</span>';
                     // If auto time out is enabled, calculate time out and update attendance record
 // If auto time out is enabled, calculate time out and update attendance record
 if($auto_time == 1){
@@ -110,7 +109,7 @@ if($auto_time == 1){
                     $sql .= " WHERE id = '".$row['uid']."'";
                     
                     if($conn->query($sql)) {
-                        $output['message'] = 'Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'];
+                        $output['message'] = '<span style="font-size: 20px;">Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'].' '.$current_time.'</span>';
         
                         $sql = "SELECT * FROM attendance WHERE id = '".$row['uid']."'";
                         $query = $conn->query($sql);
@@ -144,7 +143,7 @@ if($auto_time == 1){
                         $sched_time_out = new DateTime($srow['time_out']);
                         if ($time_out < $sched_time_out) {
                             // If time out is before scheduled time out
-                            $output['message'] .= ', undertime detected';
+                            $output['message'] .= ', <span style="font-size: 20px;">undertime detected</span>';
                             $sql = "UPDATE attendance SET num_hr = '$int', under_day = 1 WHERE id = '".$row['uid']."'";
                         } else {
                             $sql = "UPDATE attendance SET num_hr = '$int', under_day = 0 WHERE id = '".$row['uid']."'";
