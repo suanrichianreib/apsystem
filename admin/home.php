@@ -220,9 +220,9 @@ $(function(){
     datasets: [
       {
         label               : 'Late',
-        fillColor           : 'rgba(210, 214, 222, 1)',
-        strokeColor         : 'rgba(210, 214, 222, 1)',
-        pointColor          : 'rgba(210, 214, 222, 1)',
+        fillColor           : '#dd4b39',
+        strokeColor         : '#dd4b39',
+        pointColor          : '#dd4b39',
         pointStrokeColor    : '#c1c7d1',
         pointHighlightFill  : '#fff',
         pointHighlightStroke: 'rgba(220,220,220,1)',
@@ -230,7 +230,7 @@ $(function(){
       },
       {
         label               : 'Ontime',
-        fillColor           : 'rgba(60,141,188,0.9)',
+        fillColor           : 'rgba(243,156,188,0.9)',
         strokeColor         : 'rgba(60,141,188,0.8)',
         pointColor          : '#3b8bba',
         pointStrokeColor    : 'rgba(60,141,188,1)',
@@ -240,9 +240,9 @@ $(function(){
       }
     ]
   }
-  barChartData.datasets[1].fillColor   = '#00a65a'
-  barChartData.datasets[1].strokeColor = '#00a65a'
-  barChartData.datasets[1].pointColor  = '#00a65a'
+  barChartData.datasets[1].fillColor   = '#f39c12'
+  barChartData.datasets[1].strokeColor = '#f39c12'
+  barChartData.datasets[1].pointColor  = '#f39c12'
   var barChartOptions                  = {
     //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
     scaleBeginAtZero        : true,
