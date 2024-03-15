@@ -20,7 +20,7 @@
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Payroll</li>
+        <li class="active">Summary</li>
       </ol>
     </section>
     <!-- Main content -->
@@ -76,21 +76,21 @@
                 </thead>
                 <tbody>
                   <?php
-                    $sql = "SELECT *, SUM(amount) as total_amount FROM deductions";
-                    $query = $conn->query($sql);
-                    $drow = $query->fetch_assoc();
-                    $deduction = $drow['total_amount'];
+                    // $sql = "SELECT *, SUM(amount) as total_amount FROM deductions";
+                    // $query = $conn->query($sql);
+                    // $drow = $query->fetch_assoc();
+                    // $deduction = $drow['total_amount'];
   
                     
                     $to = date('Y-m-d');
                     $from = date('Y-m-d', strtotime('-30 day', strtotime($to)));
 
-                    if(isset($_GET['range'])){
-                      $range = $_GET['range'];
-                      $ex = explode(' - ', $range);
-                      $from = date('Y-m-d', strtotime($ex[0]));
-                      $to = date('Y-m-d', strtotime($ex[1]));
-                    }
+                    // if(isset($_GET['range'])){
+                    //   $range = $_GET['range'];
+                    //   $ex = explode(' - ', $range);
+                    //   $from = date('Y-m-d', strtotime($ex[0]));
+                    //   $to = date('Y-m-d', strtotime($ex[1]));
+                    // }
 
                     $sql = "SELECT 
                     employees.employee_id, 
