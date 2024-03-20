@@ -39,6 +39,7 @@
         <!-- <li><a href="payroll.php"><i class="fa fa-files-o"></i> <span>Payroll</span></a></li> -->
         <li><a href="payroll.php"><i class="fa fa-info-circle"></i> <span>Summary</span></a></li>
         <li><a href="schedule_employee.php"><i class="fa fa-clock-o"></i> <span>Schedule</span></a></li>
+        <li><a href="qr_code.php"><i class="fa fa-clock-o"></i> <span>QR Code</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
