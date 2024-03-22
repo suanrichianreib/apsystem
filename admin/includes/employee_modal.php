@@ -8,7 +8,7 @@
             	<h4 class="modal-title"><b>Add Employee</b></h4>
           	</div>
           	<div class="modal-body">
-            	<form class="form-horizontal" method="POST" action="employee_add.php" enctype="multipart/form-data">
+              <form class="form-horizontal" method="POST" action="employee_add.php" enctype="multipart/form-data" onsubmit="return validateForm()">
             <div class="form-group">
                    <label for="employee_id" class="col-sm-3 control-label">Employee ID</label>
                      <div class="col-sm-9">
@@ -121,6 +121,29 @@
         </div>
     </div>
 </div>
+
+<script>
+function validateForm() {
+    var employeeId = document.getElementById('employee_id').value;
+
+    // Send AJAX request to server to check if employee ID exists
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'check_employee_id.php', false); // Synchronous request
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('employee_id=' + employeeId);
+
+    if (xhr.status == 200) {
+        var response = xhr.responseText;
+        if (response == 'exists') {
+            alert('Employee ID already exists');
+            return false; // Prevent form submission
+        }
+    }
+
+    return true; // Allow form submission
+}
+</script>
+
 
 <!-- Edit -->
 <div class="modal fade" id="edit">

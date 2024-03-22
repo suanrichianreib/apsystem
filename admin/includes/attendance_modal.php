@@ -9,11 +9,28 @@
           	</div>
           	<div class="modal-body">
             	<form class="form-horizontal" method="POST" action="attendance_add.php">
+				<div class="form-group">
+					<label for="employeeSelect" class="col-sm-3 control-label">Employee List Guide</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="employeeSelect" id="employeeSelect">
+                            <option value="" selected disabled>Select Employee</option>
+                            <?php
+                              $sql = "SELECT * FROM employees";
+                              $query = $conn->query($sql);
+                              while($prow = $query->fetch_assoc()){
+                                echo "
+                                  <option value='".$prow['employee_id']."'>".$prow['lastname'].", ".$prow['firstname']." - [".$prow['employee_id']."]</option>
+                                ";
+                              }
+                            ?>
+                        </select>
+                    </div>
+                </div>
           		  <div class="form-group">
-                  	<label for="employee" class="col-sm-3 control-label">Employee ID</label>
+                  	<label for="employeeID" class="col-sm-3 control-label">Employee ID</label>
 
                   	<div class="col-sm-9">
-                    	<input type="text" class="form-control" id="employee" name="employee" required>
+                    	<input type="text" class="form-control" id="employeeID" name="employee" required>
                   	</div>
                 </div>
                 <div class="form-group">
@@ -52,6 +69,15 @@
         </div>
     </div>
 </div>
+
+
+<script>
+// JavaScript to update the Employee ID input field based on the selected employee
+document.getElementById('employeeSelect').addEventListener('change', function() {
+    var selectedEmployeeID = this.value;
+    document.getElementById('employeeID').value = selectedEmployeeID;
+});
+</script>
 
 <!-- Edit -->
 <div class="modal fade" id="edit">

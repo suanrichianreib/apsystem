@@ -52,6 +52,23 @@ if (isset($_GET['content']) && !empty($_GET['content'])) {
 <div class="w-full px-28 grid grid-cols-2 gap-4">
     <div class="border border-gray-300 p-6 rounded-lg">
         <form action="qr_code.php" method="get">
+        <div class="form-group">
+					<label for="employeeSelect" class="col-sm-3 control-label">Employee List Guide</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" name="employeeSelect" id="employeeSelect">
+                            <option value="" selected disabled>Select Employee</option>
+                            <?php
+                              $sql = "SELECT * FROM employees";
+                              $query = $conn->query($sql);
+                              while($prow = $query->fetch_assoc()){
+                                echo "
+                                  <option value='".$prow['employee_id']."'>".$prow['lastname'].", ".$prow['firstname']." - [".$prow['employee_id']."]</option>
+                                ";
+                              }
+                            ?>
+                        </select>
+                    </div>
+                </div>
             <div class="mb-6">
                 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Content</label>
                 <textarea type="text"
@@ -75,6 +92,15 @@ if (isset($_GET['content']) && !empty($_GET['content'])) {
         <?php endif; ?>
     </div>
 </div>
+
+<script>
+// JavaScript to update the Content input field based on the selected employee
+document.getElementById('employeeSelect').addEventListener('change', function() {
+    var selectedEmployeeID = this.value;
+    // Update the Content input field with the selected employee's ID
+    document.getElementsByName('content')[0].value = selectedEmployeeID;
+});
+</script>
 
 <script>
     function saveQRCode() {
