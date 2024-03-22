@@ -5,24 +5,28 @@
 		$contents = '';
 	 	
 		$sql = "SELECT 
-		*,
-		SUM(num_hr) + COALESCE(overtime.total_overtime, 0) AS total_hr,
-		employees.employee_id AS empid, 
-		GROUP_CONCAT(attendance.status) AS present, 
-		COUNT(attendance.status) AS status_count, 
-		SUM(attendance.under_day) AS undertime_days, 
-		position.description AS position_description 
+		employees.employee_id, 
+		employees.lastname, 
+		employees.firstname, 
+		employees.middlename, 
+		position.description AS position_description, 
+		COUNT(attendance.status) AS present_count, 
+		SUM(attendance.late) AS late_count,
+		COALESCE(overtime.total_overtime, 0) AS overtime_count,
+		SUM(attendance.num_hr) + COALESCE(overtime.total_overtime, 0) AS total_hr, 
+		SUM(under_day) AS total_undertime
 	FROM attendance 
 	LEFT JOIN employees ON employees.id = attendance.employee_id 
 	LEFT JOIN position ON position.id = employees.position_id 
 	LEFT JOIN (
 		SELECT employee_id, SUM(hours) AS total_overtime
 		FROM overtime
+		WHERE date_overtime BETWEEN '$from' AND '$to'  -- Filter overtime records by date range
 		GROUP BY employee_id
 	) AS overtime ON overtime.employee_id = employees.id
-	WHERE date BETWEEN '$from' AND '$to' 
+	WHERE date BETWEEN '$from' AND '$to'  -- Filter attendance records by date range
 	GROUP BY attendance.employee_id 
-	ORDER BY empid ASC"; // Adjusted ORDER BY clause
+	ORDER BY employees.employee_id ASC, employees.firstname ASC";
 	
 
 
@@ -44,12 +48,14 @@
 			// $total += $net;
 			$contents .= '
 			<tr>
-			    <td>'.$row['empid'].'</td>
+			    <td>'.$row['employee_id'].'</td>
 				<td>'.$row['lastname'].', '.$row['firstname'].' '.$row['middlename'].'</td>
 				<td>'.$row['position_description'].'</td> <!-- Display position description -->
-				<td>'.$row['status_count'].'</td> <!-- Include the Present column -->
-				<td>'.$row['undertime_days'].'</td> <!-- Include the Undertime Days column -->
-				<td>'.$row['total_hr'].'</td> <!-- Include the Total Hours Work column -->
+				<td>'.$row['present_count'].'</td> <!-- Include the Present column -->
+				<td>'.$row['late_count'].'</td> <!-- Include the Present column -->
+				<td>'.$row['overtime_count'].'</td> <!-- Include the Present column -->
+				<td>'.$row['total_undertime'].'</td> <!-- Include the Undertime Days column -->
+				<td>'.number_format($row['total_hr'], 2).'</td> <!-- Include the Total Hours Work column -->
 			</tr>
 			';
 		}
@@ -92,10 +98,12 @@
       	<table border="1" cellspacing="0" cellpadding="3">  
            <tr>  
 		        <th width="15%" align="center"><b>Employee ID</b></th>
-           		<th width="25%" align="center"><b>Employee Name</b></th>
-           		<th width="15%" align="center"><b>Position</b></th> <!-- New column header for Position -->
-           		<th width="15%" align="center"><b>Present</b></th> <!-- Include the Present column header -->
-				<th width="15%" align="center"><b>Undertime Days</b></th> <!-- Include the Undertime Days column header -->
+           		<th width="15%" align="center"><b>Employee Name</b></th>
+           		<th width="12%" align="center"><b>Position</b></th> <!-- New column header for Position -->
+           		<th width="10%" align="center"><b>Present</b></th> <!-- Include the Present column header -->
+				<th width="10%" align="center"><b>Late</b></th> <!-- Include the Present column header -->
+				<th width="12%" align="center"><b>Overtime Hours</b></th> <!-- Include the Present column header -->
+				<th width="12%" align="center"><b>Undertime Days</b></th> <!-- Include the Undertime Days column header -->
 				<th width="15%" align="center"><b>Total Hours Work</b></th> <!-- Include the Total Hours Work column header -->
            </tr>  
       ';  
