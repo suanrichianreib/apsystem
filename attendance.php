@@ -1,170 +1,175 @@
 <?php
-if(isset($_POST['employee'])){
-    $output = array('error'=>false);
 
+$output = array('error' => false);
+
+if (isset($_POST['employee'])) {
     include 'conn.php';
     include 'timezone.php';
 
-    $employee = $_POST['employee'];
+    $employeeId = $_POST['employee'];
     $status = $_POST['status'];
 
-    $sql = "SELECT * FROM employees WHERE employee_id = '$employee'";
-    $query = $conn->query($sql);
+    // Fetch employee details
+    $employeeQuery = "SELECT * FROM employees WHERE employee_id = '$employeeId'";
+    $employeeResult = $conn->query($employeeQuery);
 
-    if($query->num_rows > 0){
-        $row = $query->fetch_assoc();
-        $id = $row['id'];
+    if ($employeeResult->num_rows > 0) {
+        $employeeRow = $employeeResult->fetch_assoc();
+        $currentDate = date('Y-m-d');
 
-        $date_now = date('Y-m-d');
+        if ($status == 'in') {
+            // Check if employee has already timed in for today
+            $attendanceQuery = "SELECT * FROM attendance WHERE employee_id = '{$employeeRow['id']}' AND date = '$currentDate' AND time_in IS NOT NULL";
+            $attendanceResult = $conn->query($attendanceQuery);
 
-        if($status == 'in'){
-            $sql = "SELECT * FROM attendance WHERE employee_id = '$id' AND date = '$date_now' AND time_in IS NOT NULL";
-            $query = $conn->query($sql);
-            if($query->num_rows > 0){
+            if ($attendanceResult->num_rows > 0) {
                 $output['error'] = true;
-                $output['message'] = 'You have timed in for today';
-            }
-            else{
+                $output['message'] = 'You have already timed in for today';
+            } else {
+                // Perform necessary operations for time in
                 // Fetch the schedule information
-                $sched = $row['schedule_id'];
-                $sql = "SELECT * FROM schedules WHERE id = '$sched'";
-                $squery = $conn->query($sql);
-                $srow = $squery->fetch_assoc();
-                
+                $sched = $employeeRow['schedule_id'];
+                $scheduleQuery = "SELECT * FROM schedules WHERE id = '$sched'";
+                $scheduleResult = $conn->query($scheduleQuery);
+                $scheduleRow = $scheduleResult->fetch_assoc();
+
                 // Check if auto time out is enabled for the schedule
-                $auto_time = $srow['auto_time'];
-                
+                $autoTime = $scheduleRow['auto_time'];
+
                 // Calculate if the employee is late
-                $lognow = date('H:i:s');
-                $late = ($lognow > $srow['time_in']) ? 1 : 0;
-                
+                $logNow = date('H:i:s');
+                $late = ($logNow > $scheduleRow['time_in']) ? 1 : 0;
+
                 // Insert the time in record
-                $sql = "INSERT INTO attendance (employee_id, date, time_in, status, late) VALUES ('$id', '$date_now', NOW(), 0, '$late')";
-                if($conn->query($sql)){
+                $insertQuery = "INSERT INTO attendance (employee_id, date, time_in, status, late) VALUES ('{$employeeRow['id']}', '$currentDate', NOW(), 0, '$late')";
+                if ($conn->query($insertQuery)) {
                     // Set status to 0 indicating only time in
-                    $output['message'] = '<span style="font-size: 20px;">Time in: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'].' '.$lognow.'</span>';
+                    $logNowFormatted = date('h:i:s A', strtotime($logNow));
+
+                    $output['message'] = '<span style="font-size: 22px; font-weight: bold">Hi! '.$employeeRow['firstname'].' '.$employeeRow['middlename'].' '.$employeeRow['lastname'].'</span><br>';
+                    $output['message'] .= '<span style="font-size: 21px; font-weight: bold; color: green;">You have successfully timed in</span><br>';
+                    $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black;">'.$logNowFormatted.'</span><br>';
+                    $output['message'] .= '<img src="/attendtrack/images/'.$employeeRow['photo'].'" width="150" height="140" style="margin-top: 25px;">';
+                    
                     // If auto time out is enabled, calculate time out and update attendance record
-// If auto time out is enabled, calculate time out and update attendance record
-if($auto_time == 1){
-    // Use the scheduled time out for automatic time out
-    $auto_timeout = $srow['time_out'];
+                    if ($autoTime == 1) {
+                        // Use the scheduled time out for automatic time out
+                        $autoTimeout = $scheduleRow['time_out'];
 
-    // Update the time_out column in the attendance table
-    $sql = "UPDATE attendance SET time_out = '$auto_timeout', status = 1 WHERE employee_id = '$id' AND date = '$date_now'";
-    if($conn->query($sql)) {
-        // Calculate num_hr
-        // Fetch the updated attendance record
-        $sql = "SELECT * FROM attendance WHERE employee_id = '$id' AND date = '$date_now'";
-        $query = $conn->query($sql);
-        $row = $query->fetch_assoc();
+                        // Update the time_out column in the attendance table
+                        $updateQuery = "UPDATE attendance SET time_out = '$autoTimeout', status = 1 WHERE employee_id = '{$employeeRow['id']}' AND date = '$currentDate'";
+                        if ($conn->query($updateQuery)) {
+                            // Calculate num_hr
+                            // Fetch the updated attendance record
+                            $attendanceQuery = "SELECT * FROM attendance WHERE employee_id = '{$employeeRow['id']}' AND date = '$currentDate'";
+                            $attendanceResult = $conn->query($attendanceQuery);
+                            $attendanceRow = $attendanceResult->fetch_assoc();
 
-        // Calculate num_hr based on time_in and time_out
-        $time_in = new DateTime($row['time_in']);
-        $time_out = new DateTime($row['time_out']);
-        $interval = $time_in->diff($time_out);
-        $hrs = $interval->format('%h');
-        $mins = $interval->format('%i');
-        $mins = $mins/60;
-        $num_hr = $hrs + $mins;
+                            // Calculate num_hr based on time_in and time_out
+                            $timeIn = new DateTime($attendanceRow['time_in']);
+                            $timeOut = new DateTime($attendanceRow['time_out']);
+                            $interval = $timeIn->diff($timeOut);
+                            $hrs = $interval->format('%h');
+                            $mins = $interval->format('%i');
+                            $mins = $mins / 60;
+                            $numHr = $hrs + $mins;
 
-        // Update the num_hr column in the attendance table
-        $sql = "UPDATE attendance SET num_hr = '$num_hr' WHERE id = '".$row['id']."'";
-        $conn->query($sql);
-    }
-}
-                }
-                else{
+                            // Update the num_hr column in the attendance table
+                            $updateNumHrQuery = "UPDATE attendance SET num_hr = '$numHr' WHERE id = '".$attendanceRow['id']."'";
+                            $conn->query($updateNumHrQuery);
+                        }
+                    }
+                } else {
                     $output['error'] = true;
                     $output['message'] = $conn->error;
                 }
             }
-        }
+        } else {
+            // Perform operations for time out
+            // Fetch attendance details
+            $attendanceQuery = "SELECT *, attendance.id AS uid FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id WHERE attendance.employee_id = '{$employeeRow['id']}' AND date = '$currentDate'";
+            $attendanceResult = $conn->query($attendanceQuery);
 
-        
-        
-        else {
-            $sql = "SELECT *, attendance.id AS uid FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id WHERE attendance.employee_id = '$id' AND date = '$date_now'";
-            $query = $conn->query($sql);
-            if($query->num_rows < 1){
+            if ($attendanceResult->num_rows < 1) {
                 $output['error'] = true;
                 $output['message'] = 'Cannot Timeout. No time in.';
-            }
-            else {
-                $row = $query->fetch_assoc();
-                if($row['time_out'] != '00:00:00'){
+            } else {
+                $attendanceRow = $attendanceResult->fetch_assoc();
+
+                if ($attendanceRow['time_out'] != '00:00:00') {
                     $output['error'] = true;
-                    $output['message'] = 'You have timed out for today';
-                }
-                else {
+                    $output['message'] = 'You have already timed out for today';
+                } else {
                     // Get the current time for time out
-                    $current_time = date('Y-m-d H:i:s');
-                    
+                    $currentTime = date('M-d-y h:i:s A');
+
                     // Update the time_out column with the current time
-                    $sql = "UPDATE attendance SET time_out = '$current_time', status = 1";
+                    $updateQuery = "UPDATE attendance SET time_out = '$currentTime', status = 1";
                     
                     // Retrieve 'late' value stored when clocking in
-                    $late = $row['late'];
-                    $sql .= ", late = '$late'";
+                    $late = $attendanceRow['late'];
+                    $updateQuery .= ", late = '$late'";
                     
-                    $sql .= " WHERE id = '".$row['uid']."'";
-                    
-                    if($conn->query($sql)) {
-                        $output['message'] = '<span style="font-size: 20px;">Time out: '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'].' '.$current_time.'</span>';
-        
-                        $sql = "SELECT * FROM attendance WHERE id = '".$row['uid']."'";
-                        $query = $conn->query($sql);
-                        $urow = $query->fetch_assoc();
+                    $updateQuery .= " WHERE id = '{$attendanceRow['uid']}'";
 
-                        $time_in = $urow['time_in'];
-                        $time_out = $urow['time_out'];
+                    if ($conn->query($updateQuery)) {
+                        $output['message'] = '<span style="font-size: 22px; font-weight: bold">Hi! '.$employeeRow['firstname'].' '.$employeeRow['middlename'].' '.$employeeRow['lastname'].'</span><br>';
+                        $output['message'] .= '<span style="font-size: 21px; font-weight: bold; color: red;">You have successfully timed out</span><br>';
+                        $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black;">'.$currentTime.'</span><br>';                        // Fetch updated attendance record
+                        $attendanceQuery = "SELECT * FROM attendance WHERE id = '{$attendanceRow['uid']}'";
+                        $attendanceResult = $conn->query($attendanceQuery);
+                        $updatedAttendanceRow = $attendanceResult->fetch_assoc();
 
-                        $sql = "SELECT * FROM employees LEFT JOIN schedules ON schedules.id=employees.schedule_id WHERE employees.id = '$id'";
-                        $query = $conn->query($sql);
-                        $srow = $query->fetch_assoc();
+                        $timeIn = $updatedAttendanceRow['time_in'];
+                        $timeOut = $updatedAttendanceRow['time_out'];
 
-                        if($srow['time_in'] > $urow['time_in']){
-                            $time_in = $srow['time_in'];
+                        // Fetch employee's schedule
+                        $scheduleQuery = "SELECT * FROM employees LEFT JOIN schedules ON schedules.id=employees.schedule_id WHERE employees.id = '{$employeeRow['id']}'";
+                        $scheduleResult = $conn->query($scheduleQuery);
+                        $scheduleRow = $scheduleResult->fetch_assoc();
+
+                        if ($scheduleRow['time_in'] > $updatedAttendanceRow['time_in']) {
+                            $timeIn = $scheduleRow['time_in'];
                         }
 
-                        if($srow['time_out'] < $urow['time_in']){
-                            $time_out = $srow['time_out'];
+                        if ($scheduleRow['time_out'] < $updatedAttendanceRow['time_in']) {
+                            $timeOut = $scheduleRow['time_out'];
                         }
 
-                        $time_in = new DateTime($time_in);
-                        $time_out = new DateTime($time_out);
-                        $interval = $time_in->diff($time_out);
+                        $timeIn = new DateTime($timeIn);
+                        $timeOut = new DateTime($timeOut);
+                        $interval = $timeIn->diff($timeOut);
                         $hrs = $interval->format('%h');
                         $mins = $interval->format('%i');
-                        $mins = $mins/60;
+                        $mins = $mins / 60;
                         $int = $hrs + $mins;
 
                         // Calculate undertime
-                        $sched_time_in = new DateTime($srow['time_in']);
-                        $sched_time_out = new DateTime($srow['time_out']);
-                        if ($time_out < $sched_time_out) {
+                        $schedTimeIn = new DateTime($scheduleRow['time_in']);
+                        $schedTimeOut = new DateTime($scheduleRow['time_out']);
+                        if ($timeOut < $schedTimeOut) {
                             // If time out is before scheduled time out
-                            $output['message'] .= ', <span style="font-size: 20px;">undertime detected</span>';
-                            $sql = "UPDATE attendance SET num_hr = '$int', under_day = 1 WHERE id = '".$row['uid']."'";
+                            $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black;">undertime detected</span>';
+                            $updateAttendanceQuery = "UPDATE attendance SET num_hr = '$int', under_day = 1 WHERE id = '{$attendanceRow['uid']}'";
                         } else {
-                            $sql = "UPDATE attendance SET num_hr = '$int', under_day = 0 WHERE id = '".$row['uid']."'";
+                            $updateAttendanceQuery = "UPDATE attendance SET num_hr = '$int', under_day = 0 WHERE id = '{$attendanceRow['uid']}'";
                         }
 
-                        $conn->query($sql);
-                    }
-                    else{
+                        $conn->query($updateAttendanceQuery);
+                    } else {
                         $output['error'] = true;
                         $output['message'] = $conn->error;
                     }
                 }
-                
             }
         }
-    }
-    else{
+    } else {
         $output['error'] = true;
         $output['message'] = 'Employee ID not found';
     }
-    
+} else {
+    $output['error'] = true;
+    $output['message'] = 'Employee ID not provided';
 }
 
 echo json_encode($output);
