@@ -10,7 +10,7 @@
           	<div class="modal-body">
             	<form class="form-horizontal" method="POST" action="attendance_add.php">
 				<div class="form-group">
-					<label for="employeeSelect" class="col-sm-3 control-label">Employee List Guide</label>
+					<label for="employeeSelect" class="col-sm-3 control-label">Employee List</label>
                     <div class="col-sm-9">
                         <select class="form-control" name="employeeSelect" id="employeeSelect">
                             <option value="" selected disabled>Select Employee</option>
