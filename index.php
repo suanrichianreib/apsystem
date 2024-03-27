@@ -156,7 +156,7 @@ $(function() {
     }
 
     // Change background every 5 seconds
-    setInterval(changeBackground, 5000);
+    setInterval(changeBackground, 60000);
 
     var interval = setInterval(function() {
         var momentNow = moment();
