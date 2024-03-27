@@ -35,24 +35,25 @@ if(isset($_POST['employee'])){
                 $auto_time = $srow['auto_time'];
                 
                 // Calculate if the employee is late
-                $logNow = date('H:i:s');
-                $late = ($logNow > $scheduleRow['time_in']) ? 1 : 0;
-
+                $lognow = date('h:i:s A');
+                $late = ($lognow > $srow['time_in']) ? 1 : 0;
+                
                 // Insert the time in record
-                $insertQuery = "INSERT INTO attendance (employee_id, date, time_in, status, late) VALUES ('{$employeeRow['id']}', '$currentDate', NOW(), 0, '$late')";
-                if ($conn->query($insertQuery)) {
-                    // Set status to 0 indicating only time in
-                    $logNowFormatted = date('h:i:s A', strtotime($logNow));
-
-                    $output['message'] = '<span style="font-size: 22px; font-weight: bold">Hi! '.$employeeRow['firstname'].' '.$employeeRow['middlename'].' '.$employeeRow['lastname'].'</span><br>';
-                    $output['message'] .= '<span style="font-size: 21px; font-weight: bold; color: green;">You have successfully timed in</span><br>';
-                    $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black;">'.$logNowFormatted.'</span><br>';
-                    $output['message'] .= '<img src="/attendtrack/images/'.$employeeRow['photo'].'" width="150" height="140" style="margin-top: 25px;">';
+                $sql = "INSERT INTO attendance (employee_id, date, time_in, status, late) VALUES ('$id', '$date_now', NOW(), 0, '$late')";
+                if($conn->query($sql)){
                     
-                    // If auto time out is enabled, calculate time out and update attendance record
-                    if ($autoTime == 1) {
-                        // Use the scheduled time out for automatic time out
-                        $autoTimeout = $scheduleRow['time_out'];
+                    $output['message'] = '<img src="/attendtrack/images/'.$row['photo'].'" width="210" height="210" style="margin-top: 10px;"><br>';
+                    $output['message'] .= '<span style="font-size: 22px; font-weight: bold; margin-top: 40px;">Hi! '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'].'</span><br>';
+                    $output['message'] .= '<span style="font-size: 21px; font-weight: bold; color: green; margin-top: 30px;">You have successfully timed in</span><br>';
+                    $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black; margin-top: 30px;">'.$lognow.'</span><br>';
+                    
+
+                    
+                    
+                
+if($auto_time == 1){
+    // Use the scheduled time out for automatic time out
+    $auto_timeout = $srow['time_out'];
 
     // Update the time_out column in the attendance table
     $sql = "UPDATE attendance SET time_out = '$auto_timeout', status = 1 WHERE employee_id = '$id' AND date = '$date_now'";
@@ -83,13 +84,11 @@ if(isset($_POST['employee'])){
                     $output['message'] = $conn->error;
                 }
             }
-        } else {
-            // Perform operations for time out
-            // Fetch attendance details
-            $attendanceQuery = "SELECT *, attendance.id AS uid FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id WHERE attendance.employee_id = '{$employeeRow['id']}' AND date = '$currentDate'";
-            $attendanceResult = $conn->query($attendanceQuery);
-
-            if ($attendanceResult->num_rows < 1) {
+        }
+        else {
+            $sql = "SELECT *, attendance.id AS uid FROM attendance LEFT JOIN employees ON employees.id=attendance.employee_id WHERE attendance.employee_id = '$id' AND date = '$date_now'";
+            $query = $conn->query($sql);
+            if($query->num_rows < 1){
                 $output['error'] = true;
                 $output['message'] = 'Cannot Timeout. No time in.';
             }
@@ -110,15 +109,18 @@ if(isset($_POST['employee'])){
                     $late = $row['late'];
                     $sql .= ", late = '$late'";
                     
-                    $updateQuery .= " WHERE id = '{$attendanceRow['uid']}'";
+                    $sql .= " WHERE id = '".$row['uid']."'";
+                    
+                    if($conn->query($sql)) {
+                        $output['message'] = '<img src="/attendtrack/images/'.$row['photo'].'" width="210" height="210" style="margin-top: 10px;"><br>';
+                        $output['message'] .= '<span style="font-size: 22px; font-weight: bold">Hi! '.$row['firstname'].' '.$row['middlename'].' '.$row['lastname'].'</span><br>';
+                        $output['message'] .= '<span style="font-size: 21px; font-weight: bold; color: green;">You have successfully timed out</span><br>';
+                        $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black;">'.$current_time.'</span><br>';
 
-                    if ($conn->query($updateQuery)) {
-                        $output['message'] = '<span style="font-size: 22px; font-weight: bold">Hi! '.$employeeRow['firstname'].' '.$employeeRow['middlename'].' '.$employeeRow['lastname'].'</span><br>';
-                        $output['message'] .= '<span style="font-size: 21px; font-weight: bold; color: red;">You have successfully timed out</span><br>';
-                        $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black;">'.$currentTime.'</span><br>';                        // Fetch updated attendance record
-                        $attendanceQuery = "SELECT * FROM attendance WHERE id = '{$attendanceRow['uid']}'";
-                        $attendanceResult = $conn->query($attendanceQuery);
-                        $updatedAttendanceRow = $attendanceResult->fetch_assoc();
+        
+                        $sql = "SELECT * FROM attendance WHERE id = '".$row['uid']."'";
+                        $query = $conn->query($sql);
+                        $urow = $query->fetch_assoc();
 
                         $time_in = $urow['time_in'];
                         $time_out = $urow['time_out'];
@@ -148,8 +150,8 @@ if(isset($_POST['employee'])){
                         $sched_time_out = new DateTime($srow['time_out']);
                         if ($time_out < $sched_time_out) {
                             // If time out is before scheduled time out
-                            $output['message'] .= '<span style="font-size: 23px; font-weight: bold; color: black;">undertime detected</span>';
-                            $updateAttendanceQuery = "UPDATE attendance SET num_hr = '$int', under_day = 1 WHERE id = '{$attendanceRow['uid']}'";
+                            $output['message'] .= '<span style="font-size: 22px; font-weight: bold">Undertime Detected!</span>';
+                            $sql = "UPDATE attendance SET num_hr = '$int', under_day = 1 WHERE id = '".$row['uid']."'";
                         } else {
                             $sql = "UPDATE attendance SET num_hr = '$int', under_day = 0 WHERE id = '".$row['uid']."'";
                         }

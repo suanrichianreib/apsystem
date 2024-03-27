@@ -167,13 +167,13 @@
             var images = ['images/night.jpg', 'images/night2.jpg', 'images/night3.jpg', 'images/night4.jpg']; // List of background images
             var currentIndex = 0; // Index of the current background image
 
-    function changeBackground() {
-        $('body').css('background-image', 'url(' + images[currentIndex] + ')');
-        currentIndex = (currentIndex + 1) % images.length; // Move to the next image, loop back to the start if necessary
-    }
-
-    // Change background every 5 seconds
-    setInterval(changeBackground, 5000);
+            function changeBackground() {
+                $('body').css('background-image', 'url(' + images[currentIndex] + ')');
+                currentIndex = (currentIndex + 1) % images.length; 
+                // Move to the next image, loop back to the start if necessary
+            }
+            // Change background every 5 seconds
+            setInterval(changeBackground, 5000);
 
     var interval = setInterval(function() {
         var momentNow = moment();
@@ -243,11 +243,5 @@
     }).change();
 });
 </script>
-
-
-
-
-
-
 </body>
 </html>
