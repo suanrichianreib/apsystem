@@ -8,7 +8,7 @@
   }
 ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-purple sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
 
     <?php include 'includes/navbar.php'; ?>
@@ -218,11 +218,11 @@ $(function(){
   var barChartData = {
     labels  : <?php echo $months; ?>,
     datasets: [
-      {
+      { 
         label               : 'Late',
-        fillColor           : '#dd4b39',
-        strokeColor         : '#dd4b39',
-        pointColor          : '#dd4b39',
+        fillColor           : '#bf1414',
+        strokeColor         : '#bf1414',
+        pointColor          : '#bf1414',
         pointStrokeColor    : '#c1c7d1',
         pointHighlightFill  : '#fff',
         pointHighlightStroke: 'rgba(220,220,220,1)',
@@ -240,9 +240,9 @@ $(function(){
       }
     ]
   }
-  barChartData.datasets[1].fillColor   = '#f39c12'
-  barChartData.datasets[1].strokeColor = '#f39c12'
-  barChartData.datasets[1].pointColor  = '#f39c12'
+  barChartData.datasets[1].fillColor   = 'green'
+  barChartData.datasets[1].strokeColor = 'green'
+  barChartData.datasets[1].pointColor  = 'green'
   var barChartOptions                  = {
     //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
     scaleBeginAtZero        : true,

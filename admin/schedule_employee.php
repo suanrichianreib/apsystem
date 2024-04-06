@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-purple sidebar-mini "> <!-- Change skin-blue to skin-red -->
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
