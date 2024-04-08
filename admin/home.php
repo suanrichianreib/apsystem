@@ -86,7 +86,7 @@
                 $query = $conn->query($sql);
                 $ontime = $query->num_rows;
                 
-                $percentage = ($ontime/$total)*100;
+                $percentage = $total != 0 ? ($ontime/$total)*100 : 0;
 
                 echo "<h3>".number_format($percentage, 2)."<sup style='font-size: 20px'>%</sup></h3>";
               ?>
