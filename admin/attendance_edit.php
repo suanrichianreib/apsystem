@@ -9,6 +9,15 @@
 		$time_out = $_POST['edit_time_out'];
 		$time_out = date('H:i:s', strtotime($time_out));
 
+		// Check if time_out is '00:00:00' or '12:00 AM'
+		if ($time_out === '00:00:00' || $time_out === '12:00 AM') {
+			$_SESSION['error'] = "Invalid time out value";
+			header('location: attendance.php');
+			exit();
+		}
+				
+		$time_out = date('H:i:s', strtotime($time_out));
+
 		$sql = "UPDATE attendance SET date = '$date', time_in = '$time_in', time_out = '$time_out' WHERE id = '$id'";
 		if($conn->query($sql)){
 			$_SESSION['success'] = 'Attendance updated successfully';
@@ -26,9 +35,26 @@
 			// Determine if the employee is late based on the updated time in
 			$is_late = ($time_in > $srow['time_in']) ? 1 : 0;
 
+			// Calculate late minutes
+			$late_minutes = max(0, strtotime($time_in) - strtotime($srow['time_in'])) / 60;
+
+			// Calculate late hours
+			$late_hours = $late_minutes / 60;
+
 			// Update undertime in the database
 			$under_day = ($time_out >= $srow['time_out']) ? 0 : 1; // Check if time out is after or exactly at scheduled time out
-			$sql = "UPDATE attendance SET under_day = '$under_day', late = '$is_late' WHERE id = '$id'";
+            
+            // Calculate undertime hours
+            $under_hours = 0;
+            if ($time_out < $srow['time_out']) {
+                // If time out is before scheduled time out
+                $time_out_dt = new DateTime($time_out);
+                $scheduled_time_out_dt = new DateTime($srow['time_out']);
+                $interval = $time_out_dt->diff($scheduled_time_out_dt);
+                $under_hours = $interval->h + ($interval->i / 60); // Convert minutes to hours
+            }
+
+			$sql = "UPDATE attendance SET under_day = '$under_day', late = '$is_late', late_hours = '$late_hours', under_hours = '$under_hours' WHERE id = '$id'";
 			$conn->query($sql);
 
 			// Calculate other details (num_hr and status)

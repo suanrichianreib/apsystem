@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-purple sidebar-mini ">
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -14,8 +14,8 @@
         Attendance
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Attendance</li>
+        <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Attendance</li> -->
       </ol>
     </section>
     <!-- Main content -->
@@ -47,7 +47,7 @@
             $current_year = date('Y');
             
             // Loop through the years, starting from 5 years ago to 5 years from now
-            for ($year = $current_year - 5; $year <= $current_year + 5; $year++) {
+            for ($year = $current_year - 0; $year <= $current_year + 10; $year++) {
                 echo "<option value=\"$year\"";
                 if(isset($_GET['filter_year']) && $_GET['filter_year'] == $year) {
                     echo " selected";
@@ -56,6 +56,20 @@
             }
           ?>
         </select>
+
+        <label for="filter_label">&nbsp;&nbsp;&nbsp;&nbsp;Filter by Label:</label>
+          <select id="filter_label" name="filter_label">
+          <option value="">All Labels</option>
+           <?php
+        $labels = array('Done', 'Not yet');
+        foreach ($labels as $label) {
+            $selected = isset($_GET['filter_label']) && $_GET['filter_label'] === $label ? 'selected' : '';
+            echo "<option value=\"$label\" $selected>$label</option>";
+              }
+          ?>
+        </select>
+
+
         <button type="submit">Apply</button>
       </form>
       <!-- End of Filter by Month and Year Form -->
@@ -67,29 +81,41 @@
         // Default to current year if no filter is set
         $selected_year = isset($_GET['filter_year']) ? $_GET['filter_year'] : '';
 
-        // Construct the SQL query based on the selected month and year
-        $sql = "SELECT *, employees.employee_id AS empid, attendance.id AS attid 
-                FROM attendance 
-                LEFT JOIN employees ON employees.id = attendance.employee_id";
+// Construct the SQL query based on the selected month, year, and label
+$sql = "SELECT *, employees.employee_id AS empid, attendance.id AS attid 
+        FROM attendance 
+        LEFT JOIN employees ON employees.id = attendance.employee_id";
 
-        // Add WHERE clause if a specific month is selected
-        if ($selected_month !== '') {
-            $sql .= " WHERE MONTH(attendance.date) = $selected_month";
-        }
+// Add WHERE clause if a specific month is selected
+if ($selected_month !== '') {
+    $sql .= " WHERE MONTH(attendance.date) = $selected_month";
+}
 
-        // Add WHERE clause if a specific year is selected
-        if ($selected_year !== '') {
-            // Check if there's already a WHERE clause in the query
-            if ($selected_month !== '') {
-                $sql .= " AND";
-            } else {
-                $sql .= " WHERE";
-            }
-            $sql .= " YEAR(attendance.date) = $selected_year";
-        }
+// Add WHERE clause if a specific year is selected
+if ($selected_year !== '') {
+    // Check if there's already a WHERE clause in the query
+    $sql .= $selected_month !== '' ? " AND" : " WHERE";
+    $sql .= " YEAR(attendance.date) = $selected_year";
+}
 
-        // Add ORDER BY clause
-        $sql .= " ORDER BY attendance.date DESC, attendance.time_in DESC";
+// Add WHERE clause if a specific label is selected
+if (!empty($_GET['filter_label'])) {
+    $label = $_GET['filter_label'];
+    if ($selected_month === '' && $selected_year === '') {
+        $sql .= " WHERE";
+    } else {
+        $sql .= " AND";
+    }
+    // Adjust condition based on the selected label
+    if ($label === 'Done') {
+        $sql .= " time_out <> '00:00:00'";
+    } elseif ($label === 'Not yet') {
+        $sql .= " time_out = '00:00:00'";
+    }
+}
+
+// Add ORDER BY clause
+$sql .= " ORDER BY attendance.date DESC, attendance.time_in DESC";
 
         // Execute the SQL query
         $query = $conn->query($sql);

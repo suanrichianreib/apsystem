@@ -8,7 +8,7 @@
     <link rel="icon" href="images/logo.png" type="image/x-icon">
     <style>
         body {
-            background-image: url('images/bill.jpg');
+            background-image: url('images/bgc1.png');
             background-size: cover;
             background-attachment: fixed;
             height: 100vh;
@@ -122,32 +122,35 @@
             transition: background-image 1s ease-in-out; /* Added transition for smoother image changes */
             z-index: 0; /* Ensure it's behind the content */
         }
+        h1 {
+    font-size: 16px; /* Smaller font size */
+    margin: 0; /* Remove margins */
+    padding: 0; /* Remove padding */
+    margin-bottom: 10px; /* Add margin bottom */
+    margin-top: 10px;
+  }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="text-center mb-4 login-logo">
-            <img class="img-fluid" src="images/UC1.png" alt="Logo">
+<div class="container">
+    <form id="attendance">
+        <div class="form-group">
+            <select class="form-control" name="status">
+                <option value="in">Time In</option>
+            </select>
         </div>
-        <h3>Enter Employee ID</h3>
-        <p id="date"></p>
-        <p id="time"></p>
-        <form id="attendance">
-            <div class="form-group">
-                <select class="form-control" name="status">
-                    <option value="in">Time In</option>
-                    <option value="out">Time Out</option>
-                </select>
+        <div class="input-group form-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Time to Clock In</span>
             </div>
-            <div class="form-group">
-                <input type="text" class="form-control" id="employee" name="employee" placeholder="Employee ID" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
-        <footer style="text-align: center; margin-top: 20px; font-size: 15px">
-             <p>Forgot to Time In? <a href="http://localhost/attendtrack/tito.php" id="forgot-link">Click here</a></p>
-        </footer>
-    </div>
+            <input type="time" class="form-control" id="time_to_clock_in" name="time_to_clock_in">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="employee" name="employee" placeholder="Employee ID" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign In</button>
+    </form>
+</div>
     <div class="container1" style="text-align: center;">
         <div class="alert alert-success" style="display:none;">
             <span class="result"><i class="icon fa fa-check"></i> <span class="message"></span></span>
@@ -155,57 +158,56 @@
         <div class="alert alert-danger" style="display:none;">
             <span class="result"><i class="icon fa fa-warning"></i> <span class="message"></span></span>
         </div>
-        <img class="img-fluid1" src="images/4foo.gif" alt="Logo" style="display: block; margin: 0 auto; width: 190px; height: auto; margin-top: 30px;">
-        <h1 style="font-weight: bold; font-size: 31px; margin-top: 10px; margin-bottom: 50px; font-family: 'Argent CF', sans-serif;">Good morning! Wishing you a day filled with positivity, productivity, and endless possibilities.</h1>
+        <img class="img-fluid1" src="images/honest.gif" alt="Logo" style="display: block; margin: 0 auto; width: 190px; height: auto; margin-top: 30px;">
+        <h1 style="font-weight: bold; font-size: 31px; margin-top: 10px; margin-bottom: 50px; font-family: 'Argent CF', sans-serif;">Please be honest on putting your time in!</h1>
     </div>
     <!-- <div class="circle"></div> -->
     <?php include 'scripts.php' ?>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<script type="text/javascript">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script type="text/javascript">
 
-// Variable to track if a submission is allowed
-var submissionAllowed = true;
+    // Variable to track if a submission is allowed
+    var submissionAllowed = true;
 
-// Function to enable submission after a delay
-function enableSubmission() {
+    // Function to enable submission after a delay
+    function enableSubmission() {
     submissionAllowed = true;
-}
+    }
 
-setInterval(function() {
-    $('#employee').focus();
-}, 7000);
+        setInterval(function() {
+              $('#employee').focus();
+        }, 1000); 
 
-$(function() {
-    // Background image rotation setup
-    var images = ['images/bill.jpg', 'images/bill2.jpg']; // List of background images
+        $(function() {
+    // var images = ['images/bgc1.png', 'images/night2.jpg', 'images/night3.jpg', 'images/night4.jpg']; // List of background images
     var currentIndex = 0; // Index of the current background image
 
     function changeBackground() {
         $('body').css('background-image', 'url(' + images[currentIndex] + ')');
-        currentIndex = (currentIndex + 1) % images.length;
+        currentIndex = (currentIndex + 1) % images.length; 
+        // Move to the next image, loop back to the start if necessary
     }
-    // Change background every 30 seconds
-    setInterval(changeBackground, 30000);
+    // Change background every 5 seconds
+    setInterval(changeBackground, 5000);
 
-    // Date and time update setup
-    setInterval(function() {
+    var interval = setInterval(function() {
         var momentNow = moment();
         $('#date').html(momentNow.format('dddd').substring(0, 3).toUpperCase() + ' - ' + momentNow.format('MMMM DD, YYYY'));
         $('#time').html(momentNow.format('hh:mm:ss A'));
     }, 1000);
-
-    // Function to reset the page state
+    
+    // Function to reset the page state after 10 seconds
     function resetPage() {
         $('.alert').hide();
         $('.img-fluid1').show();
         $('h1').show();
     }
 
-    // Form submission handling
     $('#attendance').submit(function(e) {
         e.preventDefault();
 
+        // Check if submission is allowed
         if (!submissionAllowed) {
             return;
         }
@@ -213,10 +215,20 @@ $(function() {
         // Disable submission
         submissionAllowed = false;
 
-        var attendance = $(this).serialize();
+        // Enable submission after 3 seconds
+        setTimeout(enableSubmission, 3000);
+
+        // Capture the value entered in the "Time to Clock In" field
+        var timeToClockIn = $('#time_to_clock_in').val();
+        // Construct the form data manually
+        var attendance = {
+            status: $('select[name="status"]').val(),
+            employee: $('#employee').val(),
+            time_to_clock_in: timeToClockIn
+        };
         $.ajax({
             type: 'POST',
-            url: 'attendance.php',
+            url: 'manual_attendance.php',
             data: attendance,
             dataType: 'json',
             success: function(response) {
@@ -227,9 +239,6 @@ $(function() {
                     $('#employee').val('');
                     $('.img-fluid1').hide();
                     $('h1').hide();
-
-                    // Enable submission after 3 seconds
-                    setTimeout(enableSubmission, 500);
                 } else {
                     $('.alert').hide();
                     $('.alert-success').show();
@@ -238,41 +247,21 @@ $(function() {
                     $('#employee').focus();
                     // Hide welcome text only
                     $('h1').hide();
+                    // Optionally hide the GIF
                     $('.img-fluid1').hide();
+                    
+                    // Set a timer to reset the page state after 10 seconds
+                    setTimeout(resetPage, 90000);
 
-                    // Enable submission after 1 second
-                    setTimeout(enableSubmission, 500);
-
-                    // Set a timer to reset the page state after 60 seconds
-                    setTimeout(resetPage, 60000);
+                    setTimeout(function() {
+                            window.location.href = 'http://localhost/attendtrack/';
+                        }, 5000);
                 }
             }
         });
     });
 
-    // New code to set default select option based on time
-    function setDefaultOption() {
-        const currentTime = moment();
-        const currentHour = currentTime.hour();
-
-        let defaultOption;
-        if (currentHour >= 12 && currentHour < 13) {
-            defaultOption = "out"; 
-        } else if (currentHour >= 13 && currentHour < 17) {
-            defaultOption = "in"; 
-        } else if (currentHour >= 17) {
-            defaultOption = "out"; 
-        } else {
-            defaultOption = "in"; 
-        }
-
-        $('select[name="status"]').val(defaultOption).change(); // Set the default value and trigger the change event
-    }
-
-    setDefaultOption(); // Set the initial default option
-    setInterval(setDefaultOption, 60000); // Update every minute to ensure accuracy
-
-    // Event handling for changing the select option color
+    $('#employee').focus();
     $('select[name="status"]').change(function() {
         var selectedOption = $(this).val();
         if (selectedOption === "in") {
@@ -280,19 +269,21 @@ $(function() {
                 'background-color': 'green',
                 'color': 'white'
             });
+            $('#employee').focus();
             $('button[type="submit"]').text("Sign In"); // Change button text to "Sign In"
         } else if (selectedOption === "out") {
             $(this).css({
                 'background-color': 'red',
                 'color': 'white'
             });
+            $('#employee').focus();
             $('button[type="submit"]').text("Sign Out"); // Change button text to "Sign Out"
         }
-    }).change(); // Trigger the change event to ensure correct styling
-
-    // Initial focus on employee input field
-    $('#employee').focus();
+    }).change();
 });
+setTimeout(function() {
+    window.location.href = 'http://localhost/attendtrack/';
+  }, 60000);
 
 </script>
 </body>

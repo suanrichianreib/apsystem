@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-purple sidebar-mini ">
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -14,7 +14,7 @@
         Overtime
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li> -->
         <li>Employees</li>
         <li class="active">Overtime</li>
       </ol>

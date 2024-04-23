@@ -24,6 +24,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="timein_key" class="col-sm-3 control-label">Time In Key</label>
+
+                    <div class="col-sm-9"> 
+                      <input type="timein_key" class="form-control" id="timein_key" name="timein_key" value="<?php echo $user['timein_key']; ?>">
+                    </div>
+                </div>
+                <div class="form-group">
                   	<label for="firstname" class="col-sm-3 control-label">Firstname</label>
 
                   	<div class="col-sm-9">

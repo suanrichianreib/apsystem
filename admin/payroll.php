@@ -5,7 +5,7 @@
   $range_from = date('m/d/Y', strtotime('-30 day', strtotime($range_to)));
 ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-purple sidebar-mini ">
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -19,8 +19,8 @@
         Summary of Attendance
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Summary</li>
+        <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Summary</li> -->
       </ol>
     </section>
     <!-- Main content -->
@@ -70,10 +70,10 @@
                   <th>Employee ID</th>
                   <th>Employee Name</th>
                   <th>Position</th> <!-- New column -->
-                  <th>Present</th>
-                  <th>Late</th>
-                  <th>Overtime Hours</th>
-                  <th>Undertime Days</th> <!-- Removed the 'Late' column heading -->
+                  <th>Present Days</th>
+                  <th>Overtime Hours</th> <!-- Removed the 'Late' column heading -->
+                  <th>Late Hours</th>
+                  <th>Undertime Hours</th>
                   <th>Total Hours Work</th>
                 </thead>
                 <tbody>
@@ -100,11 +100,11 @@
                     employees.firstname, 
                     employees.middlename, 
                     position.description AS position_description, 
-                    COUNT(attendance.status) AS present_count, 
-                    SUM(attendance.late) AS late_count,
+                    SUM(CASE WHEN attendance.status = 1 THEN 1 ELSE 0 END) AS present_count, 
+                    SUM(attendance.late_hours) AS late_count,
                     COALESCE(overtime.total_overtime, 0) AS overtime_count,
                     SUM(attendance.num_hr) + COALESCE(overtime.total_overtime, 0) AS total_hr, 
-                    SUM(under_day) AS total_undertime
+                    SUM(under_hours) AS total_undertime
                 FROM attendance 
                 LEFT JOIN employees ON employees.id = attendance.employee_id 
                 LEFT JOIN position ON position.id = employees.position_id 
@@ -116,8 +116,7 @@
                 ) AS overtime ON overtime.employee_id = employees.id
                 WHERE date BETWEEN '$from' AND '$to'  -- Filter attendance records by date range
                 GROUP BY attendance.employee_id 
-                ORDER BY employees.lastname ASC, employees.firstname ASC";
-        
+                ORDER BY employees.lastname ASC, employees.firstname ASC";             
                 
 
                     $query = $conn->query($sql);
@@ -129,9 +128,9 @@
                           <td>".$row['lastname'].", ".$row['firstname']." ".$row['middlename']."</td>
                           <td>".$row['position_description']."</td> <!-- Display position description -->
                           <td>".$row['present_count']."</td>
-                          <td>".$row['late_count']."</td>
-                          <td>".$row['overtime_count']."</td>
-                          <td>".intval($row['total_undertime'])."</td>
+                          <td>".number_format($row['overtime_count'], 2)."</td>
+                          <td>".number_format($row['late_count'], 2)."</td>
+                          <td>".number_format($row['total_undertime'], 2)."</td>
                           <td>".number_format($row['total_hr'], 2)."</td>
                         </tr>
                       ";

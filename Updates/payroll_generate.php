@@ -14,8 +14,7 @@
 		SUM(attendance.late_hours) AS late_count,
 		COALESCE(overtime.total_overtime, 0) AS overtime_count,
 		SUM(attendance.num_hr) + COALESCE(overtime.total_overtime, 0) AS total_hr, 
-		(SUM(attendance.num_hr) + COALESCE(overtime.total_overtime, 0)) / 8 AS total_hr_divided_by_8,  -- corrected error by adding a comma
-		SUM(under_hours) AS total_undertime  -- this should have a comma before it
+		SUM(under_hours) AS total_undertime
 	FROM attendance 
 	LEFT JOIN employees ON employees.id = attendance.employee_id 
 	LEFT JOIN position ON position.id = employees.position_id 
@@ -28,7 +27,7 @@
 	WHERE date BETWEEN '$from' AND '$to'  -- Filter attendance records by date range
 	GROUP BY attendance.employee_id 
 	ORDER BY employees.lastname ASC, employees.firstname ASC";
-	
+
 
 		$query = $conn->query($sql);
 		$total = 0;
@@ -50,12 +49,12 @@
 			<tr>
 			    <td>'.$row['employee_id'].'</td>
 				<td>'.$row['lastname'].', '.$row['firstname'].' '.$row['middlename'].'</td>
+				<td>'.$row['position_description'].'</td> <!-- Display position description -->
 				<td>'.$row['present_count'].'</td> <!-- Include the Present column -->
 				<td>'.number_format($row['overtime_count'], 2).'</td> <!-- Include the Present column -->
 				<td>'.number_format($row['late_count'], 2).'</td> <!-- Include the Present column -->
 				<td>'.number_format($row['total_undertime'], 2).'</td> <!-- Include the Undertime Days column -->
 				<td>'.number_format($row['total_hr'], 2).'</td> <!-- Include the Total Hours Work column -->
-				<td>'.number_format($row['total_hr_divided_by_8'], 2).'</td> <!-- Include the Total Hours Work column -->
 			</tr>
 			';
 		}
@@ -97,14 +96,14 @@
       	<h4 align="center">'.$from_title." - ".$to_title.'</h4>
       	<table border="1" cellspacing="0" cellpadding="3">  
            <tr>  
-		        <th width="12%" align="center"><b>Employee ID</b></th>
+		        <th width="15%" align="center"><b>Employee ID</b></th>
            		<th width="15%" align="center"><b>Employee Name</b></th>
+           		<th width="12%" align="center"><b>Position</b></th> <!-- New column header for Position -->
            		<th width="10%" align="center"><b>Present Days</b></th> <!-- Include the Present column header -->
 				<th width="12%" align="center"><b>Overtime Hours</b></th> <!-- Include the Present column header -->
 				<th width="10%" align="center"><b>Late Hours</b></th> <!-- Include the Present column header -->
 				<th width="12%" align="center"><b>Undertime Hours</b></th> <!-- Include the Undertime Days column header -->
 				<th width="15%" align="center"><b>Total Hours Work</b></th> <!-- Include the Total Hours Work column header -->
-				<th width="15%" align="center"><b>Total Hours Days</b></th> <!-- Include the Total Hours Days column header -->
            </tr>  
       ';  
     $content .= generateRow($from, $to, $conn, $deduction);  

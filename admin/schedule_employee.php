@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-purple sidebar-mini ">
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -14,8 +14,8 @@
         Schedules
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Schedules</li>
+        <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Schedules</li> -->
       </ol>
     </section>
     <!-- Main content -->
@@ -54,6 +54,7 @@
                   <th>Employee ID</th>
                   <th>Name</th>
                   <th>Schedule</th>
+                  <th>Auto Time Out</th>
                 </thead>
                 <tbody>
                   <?php
@@ -65,6 +66,7 @@
                           <td>".$row['employee_id']."</td>
                           <td>".$row['lastname'].', '.$row['firstname'].' '.$row['middlename']."</td>
                           <td>".date('h:i A', strtotime($row['time_in'])).' - '.date('h:i A', strtotime($row['time_out']))."</td>
+                          <td>" . (($row['auto_time'] == 1) ? 'Auto' : 'None') . "</td>
                         </tr>
                       ";
                     }

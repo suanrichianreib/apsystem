@@ -8,7 +8,7 @@
   }
 ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-red sidebar-mini "> <!-- Change skin-blue to skin-red -->
+<body class="hold-transition skin-purple sidebar-mini ">
 <div class="wrapper">
 
     <?php include 'includes/navbar.php'; ?>
@@ -22,8 +22,8 @@
         Dashboard
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <!-- <li><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Dashboard</li> -->
       </ol>
     </section>
 
@@ -153,7 +153,7 @@
                     <label>Select Year: </label>
                     <select class="form-control input-sm" id="select_year">
                       <?php
-                        for($i=2015; $i<=2065; $i++){
+                        for($i=2024; $i<=2034; $i++){
                           $selected = ($i==$year)?'selected':'';
                           echo "
                             <option value='".$i."' ".$selected.">".$i."</option>

@@ -5,7 +5,7 @@
       <div class="user-panel">
   <div class="pull-left">
     <a href="../images/<?php echo (!empty($user['photo'])) ? $user['photo'] : 'profile.jpg'; ?>" target="_blank">
-      <img src="../images/<?php echo (!empty($user['photo'])) ? $user['photo'] : 'profile.jpg'; ?>" class="img-circle" alt="User Image" style="width: 50px; height: 50px;">
+      <img src="../images/<?php echo (!empty($user['photo'])) ? $user['photo'] : 'profile.jpg'; ?>" class="img-circle" alt="User Image" style="width: 35px; height: 35px; margin-left: -1px;">
     </a>
   </div>
   <div class="pull-left info">
@@ -35,10 +35,10 @@
             <li><a href="overtime.php"><i class="fa fa-circle-o"></i> Overtime</a></li>
             <!-- <li><a href="cashadvance.php"><i class="fa fa-circle-o"></i> Cash Advance</a></li> -->
             <li><a href="schedule.php"><i class="fa fa-circle-o"></i> Schedules</a></li>
+            <li><a href="position.php"><i class="fa fa-suitcase"></i> Positions</a></li>
           </ul>
         </li>
         <!-- <li><a href="deduction.php"><i class="fa fa-file-text"></i> Deductions</a></li> -->
-        <li><a href="position.php"><i class="fa fa-suitcase"></i> Positions</a></li>
         <li class="header">PRINTABLES</li>
         <!-- <li><a href="payroll.php"><i class="fa fa-files-o"></i> <span>Payroll</span></a></li> -->
         <li><a href="payroll.php"><i class="fa fa-info-circle"></i> <span>Summary</span></a></li>
@@ -48,3 +48,4 @@
     </section>
     <!-- /.sidebar -->
   </aside>
+  
